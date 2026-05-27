@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Το Πολύχρωμο - Ο Κόσμος του Παιδικού Βιβλίου</title>
+    <style>
+        /* --- Βασικές Ρυθμίσεις για όλες τις συσκευές --- */
+        * {
+            box-sizing: border-box; /* 2. Αποτρέπει τα στοιχεία από το να "ξεχειλώνουν" δεξιά λόγω padding */
+        }
+
+        html {
+            scroll-behavior: smooth; /* Ομαλό σκρολάρισμα στα links */
+        }
+        
+        body {
+            font-family: 'Comic Sans MS', 'Chalkboard SE', sans-serif;
+            background-color: #f4fbff;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+        }
+
+        /* --- Μενού Πλοήγησης (Sticky) --- */
+        nav {
+            background-color: #ffffff;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo {
+            font-size: 1.8em;
+            font-weight: bold;
+            color: #ff3366;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 20px;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #555;
+            font-size: 1.1em;
+            font-weight: bold;
+            padding: 8px 15px;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            background-color: #ffcc00;
+            color: #fff;
+            transform: translateY(-2px);
+        }
+
+        /* --- Κεντρική Οθόνη (Hero Section) --- */
+        .hero {
+            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 99%, #fecfef 100%);
+            text-align: center;
+            padding: 80px 20px;
+            border-bottom: 8px solid #ffcc00;
+        }
+
+        .hero h1 {
+            font-size: 3.5em;
+            color: #fff;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+            margin-bottom: 10px;
+            margin-top: 0;
+        }
+
+        .hero p {
+            font-size: 1.5em;
+            color: #fff;
+            margin-bottom: 30px;
+        }
+
+        .btn {
+            background-color: #33cc33;
+            color: white;
+            padding: 15px 30px;
+            font-size: 1.2em;
+            text-decoration: none;
+            border-radius: 30px;
+            font-weight: bold;
+            box-shadow: 0 5px 15px rgba(51,204,51,0.4);
+            transition: 0.3s;
+            display: inline-block;
+        }
+
+        .btn:hover {
+            background-color: #28a428;
+            transform: scale(1.05);
+        }
+
+        /* --- Ενότητα: Τι θα βρείτε (Grid Cards) --- */
+        .services {
+            padding: 60px 20px;
+            text-align: center;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .services h2 {
+            font-size: 2.5em;
+            color: #3399ff;
+            margin-bottom: 40px;
+        }
+
+        .cards-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+        }
+
+        .card {
+            background: white;
+            width: 220px;
+            padding: 30px 20px;
+            border-radius: 20px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+            border: 3px solid transparent;
+            transition: 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            border-color: #ffcc00;
+        }
+
+        .card .icon {
+            font-size: 3em;
+            margin-bottom: 15px;
+        }
+
+        .card h3 {
+            color: #ff3366;
+            margin-top: 0;
+        }
+
+        /* --- Ενότητα: Εκδηλώσεις --- */
+        .events {
+            background-color: #fff3cd;
+            padding: 60px 20px;
+            text-align: center;
+            border-top: 5px dashed #ff9900;
+            border-bottom: 5px dashed #ff9900;
+        }
+
+        .events h2 {
+            color: #ff9900;
+            font-size: 2.5em;
+            margin-top: 0;
+        }
+
+        .event-box {
+            background: white;
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            border-radius: 15px;
+            border-left: 8px solid #33cc33;
+            text-align: left;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+
+        /* --- Επικοινωνία --- */
+        .contact {
+            padding: 60px 20px;
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .contact h2 {
+            color: #9933cc;
+            font-size: 2.5em;
+            margin-top: 0;
+        }
+
+        .info-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: space-around;
+            margin-top: 30px;
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+        }
+
+        .info-item {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        footer {
+            background-color: #2c3e50;
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+
+
+        /* ==========================================================================
+           3. ΟΙ ΚΑΝΟΝΕΣ RESPONSIVE (Για οθόνες κινητών έως 768px φάρδος)
+           ========================================================================== */
+        @media (max-width: 768px) {
+            /* Το μενού γίνεται κάθετο για να μη στριμώχνεται */
+            nav {
+                flex-direction: column;
+                gap: 15px;
+                padding: 15px 10px;
+            }
+
+            .nav-links {
+                flex-wrap: wrap; /* Αν δεν χωράνε στην ίδια σειρά, σπάνε ομαλά */
+                justify-content: center;
+                width: 100%;
+                gap: 10px;
+            }
+
+            .nav-links a {
+                padding: 6px 12px;
+                font-size: 1em;
+            }
+
+            /* Μειώνουμε λίγο τα τεράστια γράμματα για να μη σπάνε άσχημα οι λέξεις */
+            .hero h1 {
+                font-size: 2.2em;
+            }
+
+            .hero p {
+                font-size: 1.2em;
+            }
+
+            .services h2, .events h2, .contact h2 {
+                font-size: 2em;
+            }
+
+            /* Οι κάρτες μεγαλώνουν ελαφρώς για να πιάνουν ωραία το χώρο στην οθόνη του κινητού */
+            .card {
+                width: 100%;
+                max-width: 280px;
+            }
+
+            /* Τα στοιχεία επικοινωνίας μπαίνουν το ένα κάτω από το άλλο αντί για δίπλα-δίπλα */
+            .info-grid {
+                flex-direction: column;
+                gap: 30px;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <a href="#" class="logo">🎨 Το Πολύχρωμο</a>
+        <ul class="nav-links">
+            <li><a href="#products">Τι Έχουμε</a></li>
+            <li><a href="#events">Εκδηλώσεις</a></li>
+            <li><a href="#contact">Επικοινωνία</a></li>
+        </ul>
+    </nav>
+
+    <header class="hero">
+        <h1>Καλώς ήρθατε στον κόσμο της φαντασίας!</h1>
+        <p>Το πιο ζεστό παιδικό βιβλιοπωλείο της πόλης, φτιαγμένο με αγάπη για μικρούς και μεγάλους.</p>
+        <a href="#contact" class="btn">Ελάτε να γνωριστούμε!</a>
+    </header>
+
+    <section id="products" class="services">
+        <h2>Τι θα βρείτε στα ράφια μας;</h2>
+        <div class="cards-container">
+            <div class="card">
+                <div class="icon">📖</div>
+                <h3>Παραμύθια</h3>
+                <p>Ιστορίες που ταξιδεύουν τα παιδιά σε μαγικούς κόσμους και διδάσκουν σπουδαίες αξίες.</p>
+            </div>
+            <div class="card">
+                <div class="icon">🧩</div>
+                <h3>Παιχνίδια</h3>
+                <p>Εκπαιδευτικά και δημιουργικά παιχνίδια για την ανάπτυξη της φαντασίας και της λογικής.</p>
+            </div>
+            <div class="card">
+                <div class="icon">🖍️</div>
+                <h3>Σχολικά</h3>
+                <p>Τετράδια, μολύβια, κασετίνες και όλα όσα χρειάζεται ένας μικρός μαθητής.</p>
+            </div>
+            <div class="card">
+                <div class="icon">✂️</div>
+                <h3>Χειροτεχνίες</h3>
+                <p>Χρώματα, πηλός, χαρτόνια και υλικά για ατέλειωτες ώρες δημιουργίας στο σπίτι.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="events" class="events">
+        <h2>🎨 Η Γωνιά των Δράσεων</h2>
+        <p>Το βιβλιοπωλείο μας δεν είναι μόνο για ψώνια. Είναι χώρος συνάντησης και δημιουργίας!</p>
+        
+        <div class="event-box">
+            <h3 style="color: #33cc33; margin-top: 0;">📚 Ώρα Παραμυθιού</h3>
+            <p><strong>Πότε:</strong> Κάθε Σάββατο στις 11:00 π.μ.</p>
+            <p>Ελάτε να διαβάσουμε παρέα τις αγαπημένες μας ιστορίες καθισμένοι στα μεγάλα πολύχρωμα μαξιλάρια μας! Η συμμετοχή είναι δωρεάν.</p>
+        </div>
+    </section>
+
+    <section id="contact" class="contact">
+        <h2>Πού θα μας βρείτε</h2>
+        <p>Σας περιμένουμε με ένα τεράστιο χαμόγελο για να σας βοηθήσουμε να διαλέξετε το τέλειο δώρο ή το επόμενο αγαπημένο βιβλίο του παιδιού σας.</p>
+        
+        <div class="info-grid">
+            <div class="info-item">
+                <h3 style="color: #ff3366;">📍 Διεύθυνση</h3>
+                <p>Οδός Παραμυθιού 12<br>Ονειρούπολη, 12345</p>
+            </div>
+            <div class="info-item">
+                <h3 style="color: #3399ff;">📞 Επικοινωνία</h3>
+                <p>Τηλέφωνο: 210 1234567<br>Email: hello@topolyxromo.gr</p>
+            </div>
+            <div class="info-item">
+                <h3 style="color: #ff9900;">⏰ Ωράριο</h3>
+                <p>Δευ-Παρ: 09:00 - 14:00 & 17:00 - 21:00<br>Σάββατο: 09:00 - 15:00</p>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>© 2026 Το Πολύχρωμο Βιβλιοπωλείο | Φτιαγμένο με 💖 για τους μικρούς μας φίλους.</p>
+    </footer>
+
+</body>
+</html>
