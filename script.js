@@ -18,37 +18,107 @@ gsap.from(".top-nav ul li", {
     delay: 0.2
 });
 
-
-// --- 2. Διαδραστικό Φόντο (Μικρό Scale & Επαναφορά μετά από 1 δευτ.) ---
+// --- 2. Διαδραστικό Φόντο με Parallax Εφέ ---
 const canvas = document.getElementById('bg-canvas');
 const ctx = canvas.getContext('2d');
 
 let width, height;
 let points = [];
-const spacing = 50; 
+// const spacing = 50;
+let spacing = 50;
 
 let effectRadius = 180; 
-let mouse = { x: -1000, y: -1000 };
-let prevMouse = { x: -1000, y: -1000 };
+let mouse = { x: -1000, y: -1000, screenX: -1000, screenY: -1000 };
+let prevMouse = { screenX: -1000, screenY: -1000 };
 
 let charge = 0; 
-let stillFrames = 0; // Νέος μετρητής για τον χρόνο ακινησίας
+let stillFrames = 0; 
+
+// --- ΕΛΕΓΧΟΣ ΣΕΛΙΔΑΣ ΓΙΑ ΤΟ PARALLAX (ΣΚΡΟΛΑΡΙΣΜΑ) ---
+// Ελέγχει αν το URL ανήκει στην αρχική (index.html) ή στο κεντρικό path (/)
+const isHomePage = window.location.pathname.endsWith('index.html') || 
+                   window.location.pathname.endsWith('/') ||
+                   window.location.pathname === '';
+
+let scrollOffset = 0;
+// Στη Home σελίδα απενεργοποιούμε το Parallax (ταχύτητα = 0), 
+// ενώ στις υπόλοιπες σελίδες το αφήνουμε στο 0.4
+const parallaxSpeed = isHomePage ? 0 : 0.4; 
+let scrollerElement;
+
+function getScroller() {
+    return document.querySelector('.content-page') || window;
+}
+
+function getScrollHeight() {
+    const el = document.querySelector('.content-page');
+    return el ? el.scrollHeight : document.documentElement.scrollHeight;
+}
+
+function updateScroll() {
+    const scroller = getScroller();
+    scrollOffset = (scroller === window) ? window.scrollY : scroller.scrollTop;
+}
 
 function resize() {
     width = canvas.width = window.innerWidth;
     height = canvas.height = window.innerHeight;
-    initGrid();
+    
+    // --- ΝΕΑ ΠΡΟΣΘΗΚΗ: Προσαρμογή πλέγματος για κινητά ---
+    if (width <= 768) {
+        spacing = 30;         // Πιο πυκνό/μικρό πλέγμα στα κινητά
+        effectRadius = 120;   // Μικρότερη ακτίνα αλληλεπίδρασης
+    } else {
+        spacing = 50;         // Κανονικό μέγεθος για υπολογιστές
+        effectRadius = 180;
+    }
+    // ------------------------------------------------------
+
+    // Εντοπισμός του στοιχείου που κάνει scroll
+    if (!scrollerElement && !isHomePage) {
+        scrollerElement = getScroller();
+        scrollerElement.addEventListener('scroll', updateScroll);
+    }
+    
+    updateScroll();
+    initGrid(); // Ξανασχεδιάζει το πλέγμα με το νέο spacing
 }
 window.addEventListener('resize', resize);
 
 window.addEventListener('mousemove', (e) => {
-    mouse.x = e.x;
-    mouse.y = e.y;
+    mouse.screenX = e.clientX;
+    mouse.screenY = e.clientY;
 });
 
 window.addEventListener('mouseout', () => {
-    mouse.x = -1000;
-    mouse.y = -1000;
+    mouse.screenX = -1000;
+    mouse.screenY = -1000;
+});
+
+
+
+// --- ΠΡΟΣΘΗΚΗ ΓΙΑ ΥΠΟΣΤΗΡΙΞΗ ΟΘΟΝΩΝ ΑΦΗΣ (ΚΙΝΗΤΑ/TABLET) ---
+
+window.addEventListener('touchstart', (e) => {
+    if (e.touches.length > 0) {
+        mouse.screenX = e.touches[0].clientX;
+        mouse.screenY = e.touches[0].clientY;
+    }
+});
+
+window.addEventListener('touchmove', (e) => {
+    if (e.touches.length > 0) {
+        mouse.screenX = e.touches[0].clientX;
+        mouse.screenY = e.touches[0].clientY;
+    }
+});
+
+
+
+window.addEventListener('touchend', () => {
+    // Όταν ο χρήστης σηκώνει το δάχτυλο, το εφέ εξαφανίζεται (όπως στο mouseout)
+    mouse.screenX = -1000;
+    mouse.screenY = -1000;
 });
 
 class Point {
@@ -76,8 +146,6 @@ class Point {
 
             if (distMouse < effectRadius) {
                 let intensity = Math.pow((effectRadius - distMouse) / effectRadius, 2); 
-                
-                // Ακόμα μικρότερο μέγιστο scale (πολλαπλασιαστής 0.2 αντί για 0.4)
                 let maxScaleAmount = 0.1 + (0.2 * charge); 
                 let currentScale = 1 + (intensity * maxScaleAmount); 
 
@@ -86,7 +154,6 @@ class Point {
             }
         }
 
-        // Φυσική ελατηρίου
         this.vx += (targetX - this.x) * this.springFactor;
         this.vy += (targetY - this.y) * this.springFactor;
         this.vx *= this.friction;
@@ -94,7 +161,6 @@ class Point {
         this.x += this.vx;
         this.y += this.vy;
 
-        // Υπολογισμός Χρώματος
         if (distMouse < effectRadius && mouse.x !== -1000) {
             let intensity = Math.pow((effectRadius - distMouse) / effectRadius, 2);
             let targetColorFactor = intensity * (0.15 + 0.85 * charge);
@@ -109,16 +175,28 @@ let cols, rows;
 
 function initGrid() {
     points = [];
-    cols = Math.floor(width / spacing) + 1;
-    rows = Math.floor(height / spacing) + 1;
+    
+    // 1. Προσθέτουμε επιπλέον στήλες για να καλύπτουν σίγουρα όλη την οθόνη (+2 για περιθώριο)
+    cols = Math.ceil(width / spacing) + 2; 
+    
+    // 2. Υπολογίζουμε το συνολικό πλάτος του νέου πλέγματος
+    let gridWidth = (cols - 1) * spacing; 
+    
+    // 3. Βρίσκουμε ακριβώς πόσο πρέπει να το μετατοπίσουμε (offset) για να κεντραριστεί
+    let offsetX = (width - gridWidth) / 2;
+
+    // Υπολογισμός ύψους / γραμμών (παραμένει ίδιος)
+    let totalScrollableHeight = Math.max(0, getScrollHeight() - window.innerHeight);
+    let virtualHeight = height + (totalScrollableHeight * parallaxSpeed);
+    rows = Math.floor(virtualHeight / spacing) + (parallaxSpeed > 0 ? 4 : 1);
 
     for (let i = 0; i < rows; i++) {
         for (let j = 0; j < cols; j++) {
-            points.push(new Point(j * spacing, i * spacing));
+            // 4. Εφαρμόζουμε το offsetX στη θέση j * spacing
+            points.push(new Point((j * spacing) + offsetX, i * spacing));
         }
     }
 }
-
 function getColor(p1, p2) {
     let factor = (p1.colorFactor + p2.colorFactor) / 2;
     
@@ -134,66 +212,55 @@ function getColor(p1, p2) {
 function animate() {
     ctx.clearRect(0, 0, width, height);
     
-    // --- Υπολογισμός Ακινησίας και "Ξεφουσκώματος" ---
+    // --- Υπολογισμός Εικονικής Θέσης Ποντικιού στο πλέγμα ---
+    if (mouse.screenX !== -1000) {
+        mouse.x = mouse.screenX;
+        mouse.y = mouse.screenY + (scrollOffset * parallaxSpeed);
+    } else {
+        mouse.x = -1000;
+        mouse.y = -1000;
+    }
+
+    // --- Υπολογισμός Ακινησίας ---
     let mouseSpeed = 0;
-    if (mouse.x !== -1000 && prevMouse.x !== -1000) {
-        let dx = mouse.x - prevMouse.x;
-        let dy = mouse.y - prevMouse.y;
+    if (mouse.screenX !== -1000 && prevMouse.screenX !== -1000) {
+        let dx = mouse.screenX - prevMouse.screenX;
+        let dy = mouse.screenY - prevMouse.screenY;
         mouseSpeed = Math.sqrt(dx * dx + dy * dy);
     }
-    prevMouse.x = mouse.x;
-    prevMouse.y = mouse.y;
+    prevMouse.screenX = mouse.screenX;
+    prevMouse.screenY = mouse.screenY;
 
-    if (mouse.x !== -1000) {
+    if (mouse.screenX !== -1000) {
         if (mouseSpeed > 2) {
-            // Αν το ποντίκι κινείται: μηδενισμός χρονομέτρου, το charge πέφτει (πάει στο μικρό εφέ)
             stillFrames = 0;
             charge -= 0.04; 
         } else {
-            // Αν είναι ακίνητο, αυξάνουμε τα καρέ ακινησίας
             stillFrames++;
             
-            // Σπάσιμο ανά 10 frames για απόλυτα ομαλό παλμό (Sine Wave Easing)
-
-            // --- 1. Φάση Αύξησης / Φόρτισης (0 έως 50 frames) ---
-            if (stillFrames < 10) {
-                charge += 0.002;  // 0-10: Ελάχιστη εκκίνηση (Ease-in)
-            } else if (stillFrames < 20) {
-                charge += 0.005;  // 10-20: Απαλή επιτάχυνση
-            } else if (stillFrames < 30) {
-                charge += 0.009;  // 20-30: Μέγιστη ταχύτητα αύξησης (Κορυφή καμπύλης)
-            } else if (stillFrames < 40) {
-                charge += 0.005;  // 30-40: Απαλή επιβράδυνση
-            } else if (stillFrames < 50) {
-                charge += 0.002;  // 40-50: Ομαλό "φρενάρισμα" πριν σταματήσει (Ease-out)
-            } 
-            
-            // --- 2. Φάση Μείωσης / Ξεφουσκώματος (50 frames και πάνω) ---
-            else if (stillFrames < 60) {
-                charge -= 0.002;  // 50-60: Ανεπαίσθητη έναρξη υποχώρησης (Ease-in)
-            } else if (stillFrames < 70) {
-                charge -= 0.005;  // 60-70: Σταδιακή επιτάχυνση καθόδου
-            } else if (stillFrames < 80) {
-                charge -= 0.009;  // 70-80: Μέγιστη ταχύτητα καθόδου
-            } else if (stillFrames < 90) {
-                charge -= 0.005;  // 80-90: Απαλή επιβράδυνση καθόδου
-            } else if (stillFrames < 100) {
-                charge -= 0.003;  // 90-100: Πολύ ομαλό σβήσιμο (Ease-out)
-            } else {
-                charge -= 0.001; // 100+: Σχεδόν στατική επιστροφή στην απόλυτη ηρεμία
-            }
+            if (stillFrames < 10) { charge += 0.002; }
+            else if (stillFrames < 20) { charge += 0.005; }
+            else if (stillFrames < 30) { charge += 0.009; }
+            else if (stillFrames < 40) { charge += 0.005; }
+            else if (stillFrames < 50) { charge += 0.002; }
+            else if (stillFrames < 60) { charge -= 0.002; }
+            else if (stillFrames < 70) { charge -= 0.005; }
+            else if (stillFrames < 80) { charge -= 0.009; }
+            else if (stillFrames < 90) { charge -= 0.005; }
+            else if (stillFrames < 100) { charge -= 0.003; }
+            else { charge -= 0.001; }
         }
     } else {
-        // Αν το ποντίκι φύγει από την οθόνη
         stillFrames = 0;
         charge -= 0.05; 
     }
     
-    // Κρατάμε το charge μεταξύ 0 (μικρό εφέ) και 1 (μέγιστο επιτρεπτό εφέ)
     charge = Math.max(0, Math.min(1, charge));
-    // ------------------------------------------------
 
     ctx.lineWidth = 1.2; 
+
+    ctx.save();
+    ctx.translate(0, -scrollOffset * parallaxSpeed);
 
     points.forEach(p => p.update());
 
@@ -222,8 +289,11 @@ function animate() {
         }
     }
 
+    ctx.restore(); 
+
     requestAnimationFrame(animate);
 }
 
 resize();
+window.addEventListener('load', resize); 
 animate();
