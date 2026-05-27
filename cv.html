@@ -5,8 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CV | Industrial & Computational Designer</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700&display=swap" rel="stylesheet">
-    
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">    
     <style>
         @keyframes morphToWhite {
             0% { background-color: #050505; color: #ffffff; }
@@ -36,121 +35,206 @@
             padding-bottom: 80px;
             color: #050505 !important;
         }
+        
         .content-container {
             max-width: 850px;
             margin: 0 auto;
             padding: 0 20px;
             text-align: left;
         }
+        
         .page-title {
             font-size: 2.5rem;
-            margin-bottom: 30px;
+            margin-bottom: 50px;
             text-align: center;
             letter-spacing: -1px;
             font-weight: 700;
         }
         
-        /* Νέα προσαρμογή για το PDF */
-        .pdf-container {
-            width: 100%;
-            /* Αναλογία για 5 σελίδες Α4 (προσαρμόζεται αυτόματα σε κινητά και PC). 
-               Αν βλέπεις ότι κόβεται λίγο στο τέλος, άλλαξε το 7.3 σε 7.5 ή 7.6 */
-            aspect-ratio: 1 / 7.3; 
-            min-height: 100vh;
-            margin-top: 20px;
+        /* Κεντρικό Container με εφέ αχνού λευκού που σβήνει περιμετρικά */
+        .cv-digital-container {
+            background: #ffffff;
+            padding: 40px;
+            border-radius: 20px;
+            /* Διπλό shadow: Το πρώτο δημιουργεί το μεγάλο λευκό σβήσιμο (glow) και το δεύτερο μια απαλή σκιά βάθους */
+            box-shadow: 0 0 60px 45px #ffffff, 0 10px 40px rgba(0, 0, 0, 0.04);
+            position: relative;
+            z-index: 3;
+        }
+
+        /* Στυλ για το όνομα στην κορυφή του CV */
+        .cv-header h1 {
+            font-size: 2.4rem;
+            margin-bottom: 5px;
+            font-weight: 700;
+            letter-spacing: -1px;
+        }
+
+        .cv-header h2 {
+            font-size: 1.1rem;
+            color: #666666;
+            margin-bottom: 40px;
+            font-weight: 300;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        /* Μεγάλες Κατηγορίες (Πλαίσια) */
+        .cv-section {
+            border: 1px solid rgba(0, 0, 0, 0.08);
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 14px;
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+
+        .cv-section h3 {
+            font-size: 1.3rem;
+            margin-bottom: 25px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #050505;
+            display: inline-block;
+            border-bottom: 2px solid #050505;
+            padding-bottom: 3px;
+        }
+
+        /* Αντικείμενα μέσα στις κατηγορίες */
+        .cv-item {
+            margin-bottom: 18px;
+        }
+        .cv-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .cv-item p {
+            line-height: 1.6;
+            font-weight: 300;
+            color: #444444;
+            margin-top: 10px;
+            padding-left: 5px;
+        }
+
+        /* Δομή για τις Ταμπούλες (Pills) */
+        .cv-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .cv-pill {
+            display: inline-block;
+            padding: 5px 14px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+        }
+
+        /* Διαφορετικά χρώματα για τις ταμπούλες για να ξεχωρίζουν */
+        .cv-pill.role {
+            background: #050505;
+            color: #ffffff;
+        }
+
+        .cv-pill.company {
+            background: rgba(0, 0, 0, 0.05);
+            color: #050505;
+            border: 1px solid rgba(0, 0, 0, 0.08);
+        }
+
+        .cv-pill.date {
+            background: transparent;
+            color: #666666;
+            border: 1px solid rgba(0, 0, 0, 0.15);
+            font-weight: 300;
+        }
+
+        /* Ταμπούλες για τις δεξιότητες (Skills) */
+        .skills-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .cv-pill.skill {
+            background: #ffffff;
+            color: #050505;
+            border: 1px solid rgba(0, 0, 0, 0.12);
+            padding: 8px 16px;
             border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
         }
-        
-        .pdf-container iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
-            /* Κρύβει την εσωτερική μπάρα κύλισης αν δεν χρειάζεται */
-            overflow: hidden; 
+        .cv-pill.skill:hover {
+            background: #050505;
+            color: #ffffff;
+            border-color: #050505;
         }
-/* Container για το ψηφιακό CV */
-.cv-digital-container {
-    background: transparent;
-    padding: 20px 0;
-    font-family: 'Space Grotesk', sans-serif;
-    color: #050505; /* Μαύρο κείμενο όπως το έχεις ήδη στην CV σελίδα */
+
+        /* Στυλ για το κουμπί Download */
+        .download-btn {
+            display: inline-block;
+            background: #050505;
+            color: #ffffff !important;
+            padding: 12px 25px;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 4;
+        }
+
+        .download-btn:hover {
+            background: #444444;
+            transform: translateY(-2px);
+        }
+		/* 1. Γενική μείωση της γραμματοσειράς στο τμήμα του CV */
+		.cv-section {
+			font-size: 14px; /* Μπορείς να το μειώσεις κι άλλο, π.χ. 13px, αν χρειάζεται */
+		}
+
+		/* 2. Ρυθμίσεις παραγράφου: Μικρότερα γράμματα και αφαίρεση κενού από πάνω */
+		.cv-section p {
+			font-size: 0.95em;      /* Μικραίνει λίγο σε σχέση με το βασικό μέγεθος */
+			line-height: 1.0;       /* Ύψος γραμμής για να παραμένει ευανάγνωστο */
+			margin-top: 2px;        /* Ελάχιστη απόσταση από την ημερομηνία (βάλε 0 αν το θες εντελώς κολλητά) */
+			margin-bottom: 10px;    /* Απόσταση από την επόμενη εγγραφή (το επόμενο σετ με ταμπελάκια) */
+		}
+
+		/* 3. Μικραίνουμε αναλογικά και τα ταμπελάκια (pills) */
+		.cv-pill {
+			font-size: 0.85em;      /* Κάνει τα γράμματα στα pills πιο μικρά */
+			padding: 3px 8px;       /* Προαιρετικά: μικραίνεις λίγο και το "γέμισμα" στο πλαίσιο */
+			display: inline-block;
+			margin-bottom: 0;       /* Σιγουρεύουμε ότι τα pills δεν προσθέτουν κενό από κάτω τους */
+		}
+/* 1. Μετακίνηση των bullets πιο μέσα (εσοχή) */
+.cv-section ul {
+    padding-left: 40px; /* Μπορείς να αυξήσεις αυτή την τιμή (π.χ. 50px) αν τα θέλεις ακόμα πιο μέσα */
 }
 
-/* Μορφοποίηση των τίτλων που θα παράγονται αυτόματα */
-.cv-digital-container h1 {
-    font-size: 2.2rem;
-    margin-bottom: 5px;
-    font-weight: 700;
-    letter-spacing: -1px;
+/* 2. Προσθήκη απόστασης μεταξύ των bullets */
+.cv-section li {
+    margin-bottom: 12px; /* Μπορείς να αλλάξεις αυτή την τιμή για να μεγαλώσεις/μικρύνεις το κενό */
 }
 
-.cv-digital-container h2 {
-    font-size: 1.2rem;
-    color: #666666;
-    margin-bottom: 30px;
-    font-weight: 300;
-    text-transform: uppercase;
-    letter-spacing: 1px;
+/* Προαιρετικά: Αφαίρεση του κενού κάτω από το τελευταίο bullet για καλύτερη στοίχιση */
+.cv-section li:last-child {
+    margin-bottom: 0;
 }
-
-.cv-digital-container h3 {
-    font-size: 1.4rem;
-    margin-top: 30px;
-    margin-bottom: 15px;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-    padding-bottom: 5px;
-    font-weight: 500;
-}
-
-/* Μορφοποίηση λιστών και κειμένου */
-.cv-digital-container ul {
-    list-style-type: square;
-    padding-left: 20px;
-    margin-bottom: 20px;
-}
-
-.cv-digital-container li {
-    margin-bottom: 12px;
-    line-height: 1.6;
-    font-weight: 300;
-}
-
-.cv-digital-container p {
-    line-height: 1.6;
-    font-weight: 300;
-    margin-bottom: 10px;
-}
-
-/* Στυλ για το κουμπί Download */
-.download-btn {
-    display: inline-block;
-    background: #050505;
-    color: #ffffff !important;
-    padding: 12px 25px;
-    text-decoration: none;
-    font-size: 0.9rem;
-    font-weight: 500;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    border-radius: 4px;
-    transition: all 0.3s ease;
-}
-
-.download-btn:hover {
-    background: #444444;
-    transform: translateY(-2px);
-}
-
-
 
 
     </style>
 </head>
 <body>
     <script>
-        // Διαβάζουμε το χρώμα της προηγούμενης σελίδας
         if (sessionStorage.getItem('themeOrigin') === 'dark') {
             document.body.classList.add('animate-bg');
         }
@@ -173,31 +257,153 @@
         <div class="content-container">
             <h1 class="page-title">Curriculum Vitae</h1>
             
-<div class="cv-digital-container" id="cv-content">
-    <p style="text-align:center; color:#888;">Φόρτωση βιογραφικού...</p>
-</div>
+            <div class="cv-digital-container">
+                
+                
 
-<div style="text-align: center; margin-top: 40px;">
-    <a href="cv.pdf" download class="download-btn">Κατεβάστε το PDF</a>
-</div>
+				<div class="cv-section">
+					<h3>Εκπαίδευση</h3>
+									
+					<div class="cv-item">
+						<div class="cv-meta">
+							<span class="cv-pill role">Διδακτορικό</span>
+							<span class="cv-pill company">uowm</span>
+							<span class="cv-pill date">2/2022 - σήμερα</span>
+							<p>Υποψήφιος Διδάκτορας του Τμήματος Μηχανικών Σχεδίασης Προϊόντων & Συστημάτων, της Πολυτεχνικής Σχολής του Πανεπιστημίου Δυτικής Μακεδονίας.</p>
 
-<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+							<span class="cv-pill role">Μεταπτυχιακό</span>
+							<span class="cv-pill company">ihu</span>
+							<span class="cv-pill date">10/2025 - σήμερα</span>
+							<p>Μεταπτυχιακές σπουδές στο Τμήμα Μηχανικών Παραγωγής και Διοίκησης της Πολυτεχνικής Σχολής του Διεθνούς Πανεπιστημίου Ελλάδος, με τίτλο: "<strong>Ρομποτική, STEAM και Νέες τεχνολογίες στην εκπαίδευση</strong>".</p>
 
-<script>
-    // Κώδικας που διαβάζει το cv.md και το τοποθετεί στη σελίδα
-    fetch('cv.md')
-        .then(response => {
-            if (!response.ok) throw new Error("Το αρχείο cv.md δεν βρέθηκε");
-            return response.text();
-        })
-        .then(text => {
-            document.getElementById('cv-content').innerHTML = marked.parse(text);
-        })
-        .catch(err => {
-            document.getElementById('cv-content').innerHTML = "<p>Σφάλμα κατά τη φόρτωση του βιογραφικού.</p>";
-            console.error(err);
-        });
-</script>
+							<span class="cv-pill role">Μεταπτυχιακό</span>
+							<span class="cv-pill company">uowm</span>
+							<span class="cv-pill date">10/2020 - 1/2022</span>
+							<p>Μεταπτυχιακές σπουδές στο Τμήμα Μηχανικών Σχεδίασης Προϊόντων & Συστημάτων της Πολυτεχνικής Σχολής του Πανεπιστημίου Δυτικής Μακεδονίας, με τίτλο: "<strong>Συστήματα CAD/CAM & Σχεδιασμός Προϊόντων</strong>", με ειδικότητα στα Συστήματα CAD/CAM.</p>
+
+							<span class="cv-pill role">Πτυχίο</span>
+							<span class="cv-pill company">uowm</span>
+							<span class="cv-pill date">9/2016 - 9/2020</span>
+							<p>Προπτυχιακές σπουδές στο Τμήμα <strong>Μηχανολόγων Μηχανικών & Βιομηχανικού Σχεδιασμού</strong>, Εισαγωγική Κατεύθυνση <strong>Βιομηχανικού Σχεδιασμού</strong>, Πανεπιστήμιο Δυτικής Μακεδονίας.</p>
+						</div>
+					</div>
+				</div>
+
+
+
+
+
+
+				<div class="cv-section">
+					<h3>Επαγγελματική Εμπειρία</h3>
+					<ul>
+						<li><strong>Διδακτική εμπειρία σε μαθήματα:</strong> Σχεδίαση με Η/Υ CAD (Autocad, Inventor, Rhino, Blender), Ψηφιακή Καθοδήγηση Εργαλειομηχανών (CAM), Γραφιστικές Εφαρμογές, Photoshop, Illustrator, Βάσεις Δεδομένων (Access, SQL), C++, Python, HTML, Σχεδιασμό και Ανάπτυξη Ιστοσελίδων, Εισαγωγή στην Πληροφορική, Εργαλεία ανάπτυξης Video, Δημιουργία Animation, Game Design, GUI coding.</li>
+						<li><strong>2/2024 - σήμερα:    </strong> Διδασκαλία στον τομέα Ρομποτικής, STEAM, Προγραμματισμού και 3D Printing του MindLab Education.</li>
+						<li><strong>2/2022 - σήμερα:    </strong> Διδασκαλία στην κατεύθυνση Web Design & Development, Game Design & Development του IEK VOLTEROS.</li>
+						<li><strong>11/2017 - σήμερα:   </strong> Μέλος της σχεδιαστικής ομάδας heptahedron.studio. <a href="#">[Link]</a></li>
+						<li><strong>11/2017 - σήμερα:   </strong> Μέλος του εργαστηρίου CODE+ του Τμήματος Μηχανικών Σχεδίασης Προϊόντων και Συστημάτων, Πανεπιστήμιο Δυτικής Μακεδονίας. <a href="#">[Link]</a></li>
+						<li><strong>2024 - 2025:        </strong> Παροχή επικουρικού διδακτικού έργου για το μάθημα «Σχεδιασμός Συσκευασιών» στο Τμήμα Μηχανικών Σχεδίασης Προϊόντων και Συστημάτων του Πανεπιστημίου Δυτικής Μακεδονίας.</li>
+						<li><strong>2023 - 2024 και 2024 - 2025: </strong> Διδασκαλία στην κατεύθυνση Τεχνικός Εφαρμογών Πληροφορικής (Πολυμέσα/ Web Designer - Developer/ Video Games του Σ.Α.Ε.Κ. Κοζάνης </li>
+						<li><strong>2023 - 2024 και 2024 - 2025: </strong> Παροχή επικουρικού διδακτικού έργου για το μάθημα «Γραφιστικές Εφαρμογές» στο Τμήμα Μηχανικών Σχεδίασης Προϊόντων και Συστημάτων του Πανεπιστημίου Δυτικής Μακεδονίας.                 </li>
+						<li><strong>2021 - 2022:        </strong>  Ενισχυτική διδασκαλία για το μάθημα «Σχεδίαση με Η/Υ» στο Τμήμα Μηχανικών Σχεδίασης Προϊόντων και Συστημάτων του Πανεπιστημίου Δυτικής Μακεδονίας. </li>
+						<li><strong>2020 - 2021:          </strong>  Ενισχυτική διδασκαλία για το μάθημα «Σχεδίαση με Η/Υ» στο Τμήμα Μηχανικών Σχεδίασης Προϊόντων και Συστημάτων του Πανεπιστημίου Δυτικής Μακεδονίας.  </li>
+						<li><strong>2020 - 2021:          </strong>  Ενισχυτική διδασκαλία για το μάθημα «Ψηφιακή Καθοδήγηση Εργαλειομηχανών (CAM)» στο Τμήμα Μηχανολόγων Μηχανικών & Βιομηχανικού Σχεδιασμού - Βιομηχανικού Σχεδιασμού του Πανεπιστημίου Δυτικής Μακεδονίας.  </li>
+						<li><strong>3/2020 - 10/2020:   </strong>  Πρακτική Άσκηση στα πλαίσια φοίτησης του τμήματος Μηχανολόγων Μηχανικών & Βιομηχανικού Σχεδιασμού στην Διαφημιστική Εταιρία «Madit».  </li>
+					</ul>
+				</div>
+
+				<div class="cv-section">
+					<h3>Ερευνητικά Προγράμματα</h3>
+					<ul>
+						<li><strong>Από 01/09/2025 έως 31/12/2025:  </strong> Συμμέτοχή στο ερευνητικό πρόγραμμα με τίτλο «Digital Tools for Wearable Products for the Shoe Industry - Digi4Wearables». Στα πλαίσια του προγράμματος δημιουργήθηκε εκπαιδευτικό υλικό στην ανάπτυξη μεθοδευμένων τρόπων σχεδιασμού προϊόντων που βασίζονται σε συγκεκριμένα δημιουργικά μεθοδολογικά εργαλεία και αρχές. Παράλληλα πραγματοποιήθηκε έλεγχος, επαλήθευση και επικύρωση του εκπαιδευτικού πακέτου όλου του έργου που αναπτύχθηκε. Τέλος, δημιουργήθηκε πλατφόρμα με διαδικτυακό υλικό δομημένο σε θεματικές ενότητες. (Κωδικός έργου 54883).      </li>
+						<li><strong>Από 12/10/2022 έως 25/5/2023:   </strong> Συμμέτοχή στο ερευνητικό πρόγραμμα με τίτλο «Σύστημα ανάλυσης, τεκμηρίωσης και επίδειξης παραδοσιακών μουσικών οργάνων του Μουσείου Κρητικής Εθνολογίας», Στα πλαίσια του προγράμματος πραγματοποιήθηκε επεξεργασία με στόχο τη διόρθωση και συμπλήρωση των γεωμετριών που θα προκύψουν από την σάρωση των οργάνων,  εξαγωγή μοντέλων, επεξεργασία και βελτιστοποίηση σε περιβάλλον συστήματος CAD, φωτορεαλιστική απεικόνιση και 3D εκτύπωση των μουσικών οργάνων σε φυσικό μέγεθος. (Κωδικός έργου 80502).  </li>
+					</ul>
+				</div>                
+
+
+				<div class="cv-section">
+					<h3>Ερευνητικά Προγράμματα</h3>
+					<ul>
+						<li> “Πιστοποιητικό εκπαίδευσης του 3D Systems Geomagic Design X” από την JGC, 2022.     </li>
+						<li> “Χειρισμός και συντήρηση του 3D εκτυπωτή CREATBOT D600 PRO και του λογισμικού CreatWare” από την ΑΝΙΜΑ, 2021.     </li>
+						<li> “Πιστοποιητικό εκπαίδευσης του 3D σαρωτή ARTEC EVA 3D SCANNER και του λογισμικού ARTEC STUDIO 15” από την JGC, 2021.     </li>
+						<li> “Χειρισμός και συντήρηση 3D εκτυπωτή ProJet 1200 της εταιρείας 3D Systems”, από την PV Engineering Co. Industrial Applications, 2018.   </li>
+						<li> “Χειρισμός και συντήρηση του εκτυπωτή Roland TrueVis VG2-640”, από την ATLAS DIGITAL, 2022.  </li>
+
+					</ul>
+				</div>   
+
+
+
+				<div class="cv-section">
+					<h3>Συμμετοχή σε Σεμινάρια</h3>
+					<ul>
+						<li> Συμμετοχή στο σεμινάριο «Εκπαίδευσης Εκπαιδευτών Ενηλίκων» του Εργαστήριου Εκπαιδευτικής Τεχνολογίας και Συστημάτων Ηλεκτρονικής Μάθησης του Πανεπιστημίου Δυτικής Αττικής, 176 ωρών, 14/6/2023 - 30/7/2023.    </li>
+						<li> Συμμετοχή στο μοριοδοτούμενο Πρόγραμμα Επιμόρφωσης “Εκπαιδευτών Ρομποτικής, STEAM & Νέων Τεχνολογιών”, 400 ωρών, Τμήμα Μηχανικών Παραγωγής & Διοίκησης της Σχολής Μηχανικών του Διεθνούς Πανεπιστημίου Ελλάδος (ΔΙΠΑΕ) (6/2021 έως 3/2022)    </li>
+						<li> Συμμετοχή στο 26-ωρο σεμινάριο «Design Computing: 3D Modeling in Rhinoceros with Python/Rhinoscript», University of Michigan, Coursera, (10/8/2020 έως 11/9/2020).    </li>
+						<li> Συμμετοχή στο 47-ωρο σεμινάριο «Introduction to Programming and Animation with Alice», Duke University, Coursera, (1/8/2020 έως 26/8/2020).   </li>
+						<li> Συμμετοχή στο 10-ωρο σεμινάριο «Intro to Digital Manufacturing with Autodesk Fusion 360», Autodesk, Coursera, (1/8/2020 έως 25/8/2020).   </li>
+						<li> Συμμετοχή στο 10-ωρο σεμινάριο «Autodesk Fusion 360 Integrated CAD/CAM/CAE», Autodesk, Coursera, (1/8/2020 έως 24/8/2020).   </li>
+						<li> Συμμετοχή στο 2-ωρο σεμινάριο «Game Theory with Python», Coursera Project Network, Coursera, 20/8/2020.   </li>
+						<li> Συμμετοχή στο σεμινάριο 60 ωρών «ΗΥ1.1: Εισαγωγή στην Python», Κέντρο Ανοικτών Διαδικτυακών Μαθημάτων Mathesis των Πανεπιστημιακών Εκδόσεων Κρήτης του Ιδρύματος Τεχνολογίας και Έρευνας, (18/2/2019 έως 31/3/2019).    </li>
+						<li> Συμμετοχή στο 8-ώρο σεμινάριο με θέμα «3D Scanning – Σεμινάριο στις Τεχνολογίες Τρισδιάστατης Σάρωσης», Τεχνολογικό Εκπαιδευτικό Ίδρυμα Δυτικής Μακεδονίας, 26 Νοεμβρίου 2017.   </li>
+					</ul>
+				</div>   
+
+
+
+
+				<div class="cv-section">
+					<h3>Συγγραφική Δραστηριότητα</h3>
+					<ul>
+						<li> Αθανάσιος Μανάβης, Πρόδρομος Μηνάογλου, Νικόλαος Ευκολίδης, Παναγιώτης Κυράτσης, «Εργαλεία Σχεδίασης Προϊόντων» Δεύτερη Έκδοση, ISBN: 978-618-00-5629-7, Εκδόσεις Τζιόλα. Σεπτέμβριος 2022, Κοζάνη.     </li>
+						<li> Παναγιώτης Κυράτσης, Νικόλαος Ευκολίδης, Πρόδρομος Μηνάογλου, Αθανάσιος Μανάβης, «Σχεδιασμός Προϊόντων», ISBN: 978-960-418-932-8, Εκδόσεις Τζιόλα. Οκτώβριος 2021, Κοζάνη.     </li>
+						<li> Παναγιώτα Λίγκα, Πρόδρομος Μηνάογλου, Αθανάσιος Μανάβης, Παναγιώτης Κυράτσης, «Wearable Products Unapplied Design Vol.4», ISBN: 978-960-418-981-6, Δεκέμβριος 2024 Κοζάνη.    </li>
+						<li> Κωνσταντίνα Κέφου, Πρόδρομος Μηνάογλου, Αθανάσιος Μανάβης, Παναγιώτης Κυράτσης «DIGITAL TEXTURING» Unapplied Design, Volume IIΙ, ISBN: 978-618-00-4879-7, Δεκέμβριος 2023, Κοζάνη.    </li>
+						<li> Βάγια Τζιντζή, Πρόδρομος Μηνάογλου, Αθανάσιος Μανάβης, Παναγιώτης Κυράτσης, «Τρισδιάστατη μοντελοποίηση προϊόντων: Rhino3D / C.A.D.Based Product Development (CD-ROM)»,  ISBN: 978-618-00-2152-3, Ιούλιος 2020, Κοζάνη.     </li>
+						<li> Πρόδρομος Μηνάογλου, Αθανάσιος Μανάβης, Παναγιώτης Κυράτσης, «30 Μαθήματα Computational Design / Rhinoceros 3DPython (ΒΙΒΛΙΟ+DVD-ROM)», ISBN: 978-618-00-2006-9, Μάϊος 2020, Κοζάνη.   </li>
+						<li> Πρόδρομος Μηνάογλου, Αθανάσιος Μανάβης, Παναγιώτης Κυράτσης, «Εισαγωγή στον υπολογιστικό σχεδιασμό / Εργαλεία, τεχνικές και εφαρμογές στο σχεδιασμό προϊόντων», ISBN: 978-618-00-1855-4, Φεβρουάριος 2020, Κοζάνη.    </li>
+						<li> Μανάβης Αθανάσιος, Κυράτσης Παναγιώτης, Μηνάoγλου Πρόδρομος, Αϊδινλή Κυριακή, «Βασικές αρχές σχεδιασμού τρισδιάστατων κινούμενων γραφικών για εφαρμογές βίντεο», ISBN: 978-618-00-1493-8, Οκτώβριος 2019, Κοζάνη.    </li>							
+				</div>  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                <div class="cv-section">
+                    <h3>Δεξιότητες</h3>
+                    
+                    <div class="skills-grid">
+                        <span class="cv-pill skill">Parametric Design (Grasshopper, Rhino)</span>
+                        <span class="cv-pill skill">HTML / CSS / JavaScript</span>
+                        <span class="cv-pill skill">3D Printing & Prototyping</span>
+                        <span class="cv-pill skill">Industrial UI/UX</span>
+                    </div>
+                </div>
+
+
+
+
+
+            </div>
+            <div style="text-align: center; margin-top: 50px;">
+                <a href="cv.pdf" download class="download-btn">Κατεβάστε το PDF</a>
+            </div>
 
         </div>
     </main>
@@ -219,11 +425,12 @@
             return `rgba(0, 0, 0, ${a})`;
         };
         
-        gsap.from(".page-title, .pdf-container", {
+        // Ομαλό animation εμφάνισης με GSAP
+        gsap.from(".page-title, .cv-section, .cv-header, .download-btn", {
             y: 30,
             opacity: 0,
             duration: 1,
-            stagger: 0.2,
+            stagger: 0.15,
             ease: "power3.out",
             delay: 0.4
         });

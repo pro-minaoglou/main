@@ -297,3 +297,74 @@ function animate() {
 resize();
 window.addEventListener('load', resize); 
 animate();
+
+
+
+
+// --- ΠΛΟΗΓΗΣΗ ΜΕ SWIPE (ΓΙΑ ΚΙΝΗΤΑ/TABLETS) ---
+
+// 1. Ορίζουμε τη σειρά των σελίδων ακριβώς όπως είναι στο μενού
+const pagesList = [
+    'index.html',
+    'portfolio.html',
+    'cv.html',
+    'books.html',
+    'Publications.html'
+];
+
+// 2. Βρίσκουμε ποια είναι η τρέχουσα σελίδα από το URL
+let currentPageName = window.location.pathname.split('/').pop();
+// Αν το URL τελειώνει σε '/' (π.χ. root domain), θεωρούμε ότι είναι η αρχική
+if (currentPageName === '' || currentPageName === '/') {
+    currentPageName = 'index.html';
+}
+
+// Μεταβλητές για την καταγραφή της θέσης αφής
+let touchStartX = 0;
+let touchEndX = 0;
+let touchStartY = 0;
+let touchEndY = 0;
+
+// Ελάχιστη απόσταση σε pixels για να θεωρηθεί η κίνηση ως "swipe" (αποφυγή τυχαίων αγγιγμάτων)
+const swipeThresholdX = 60; 
+// Μέγιστη επιτρεπτή κάθετη απόσταση (για να μην αλλάζει σελίδα αν ο χρήστης απλά σκρολάρει προς τα κάτω)
+const maxThresholdY = 50; 
+
+window.addEventListener('touchstart', (e) => {
+    touchStartX = e.changedTouches[0].screenX;
+    touchStartY = e.changedTouches[0].screenY;
+}, { passive: true });
+
+window.addEventListener('touchend', (e) => {
+    touchEndX = e.changedTouches[0].screenX;
+    touchEndY = e.changedTouches[0].screenY;
+    handleSwipeGesture();
+}, { passive: true });
+
+function handleSwipeGesture() {
+    let currentIndex = pagesList.indexOf(currentPageName);
+    
+    // Αν για κάποιο λόγο η σελίδα δεν υπάρχει στη λίστα, δεν κάνουμε τίποτα
+    if (currentIndex === -1) return;
+
+    let distanceX = touchEndX - touchStartX;
+    let distanceY = touchEndY - touchStartY;
+
+    // Ελέγχουμε αν το swipe ήταν κυρίως οριζόντιο και όχι κάθετο σκρολάρισμα
+    if (Math.abs(distanceY) < maxThresholdY) {
+        
+        // Swipe Left (το δάχτυλο πήγε αριστερά) -> Επόμενη σελίδα
+        if (distanceX < -swipeThresholdX) {
+            if (currentIndex < pagesList.length - 1) {
+                window.location.href = pagesList[currentIndex + 1];
+            }
+        }
+        
+        // Swipe Right (το δάχτυλο πήγε δεξιά) -> Προηγούμενη σελίδα
+        else if (distanceX > swipeThresholdX) {
+            if (currentIndex > 0) {
+                window.location.href = pagesList[currentIndex - 1];
+            }
+        }
+    }
+}
