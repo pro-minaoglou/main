@@ -372,3 +372,40 @@ function handleSwipeGesture() {
         }
     }
 }
+
+
+
+// --- ΑΠΟΚΡΥΨΗ / ΕΜΦΑΝΙΣΗ NAVBAR ΚΑΤΑ ΤΟ SCROLL ---
+
+// Ελέγχουμε αν είμαστε στην αρχική σελίδα (Home)
+const isNavHomePage = window.location.pathname.endsWith('index.html') || 
+                      window.location.pathname.endsWith('/') ||
+                      window.location.pathname === '';
+
+// Ο κώδικας θα εκτελεστεί μόνο αν ΔΕΝ βρισκόμαστε στην αρχική
+if (!isNavHomePage) {
+    const topNav = document.querySelector('.top-nav');
+    // Το στοιχείο που κάνει το scroll στις υπόλοιπες σελίδες σου είναι το .content-page
+    const pageScroller = document.querySelector('.content-page'); 
+    let lastScrollY = 0;
+
+    if (pageScroller && topNav) {
+        pageScroller.addEventListener('scroll', () => {
+            // Παίρνουμε την τρέχουσα θέση του scroll μέσα στο .content-page
+            let currentScrollY = pageScroller.scrollTop;
+
+            // Ελέγχουμε την κατεύθυνση του scroll
+            if (currentScrollY > lastScrollY && currentScrollY > 50) {
+                // Scroll προς τα ΚΑΤΩ: Κρύβουμε το μενού μετακινώντας το προς τα πάνω
+                topNav.style.transform = "translateY(-100%)";
+            } else {
+                // Scroll προς τα ΠΑΝΩ (ή αν είμαστε στην κορυφή): Εμφανίζουμε το μενού
+                topNav.style.transform = "translateY(0)";
+            }
+
+            // Αποθηκεύουμε την τρέχουσα θέση για την επόμενη σύγκριση
+            // Το Math.max αποτρέπει προβλήματα με το "bounce" effect (overscroll) στα κινητά
+            lastScrollY = Math.max(0, currentScrollY); 
+        });
+    }
+}
