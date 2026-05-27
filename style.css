@@ -256,3 +256,76 @@ CSS
 .animate-bg-dark {
     animation: morphToBlack 2s ease-in-out forwards;
 }
+
+
+
+/* ==========================================================================
+   ΡΥΘΜΙΣΕΙΣ ΓΙΑ ΚΙΝΗΤΑ (Οθόνες μικρότερες από 768px)
+   ========================================================================== */
+@media (max-width: 768px) {
+    
+    /* --- 1. Αρχική Σελίδα (Home) --- */
+    .name {
+        font-size: 2.2rem; /* Από 3.5rem */
+    }
+    .title {
+        font-size: 0.95rem; /* Από 1.2rem */
+        letter-spacing: 1.5px;
+    }
+    .description {
+        font-size: 0.9rem; /* Από 1rem */
+    }
+    .profile-img {
+        width: 140px; /* Μικραίνουμε λίγο και τη φωτογραφία */
+        height: 140px;
+    }
+
+    /* --- 2. Μενού Πλοήγησης (Top Nav) --- */
+    .top-nav {
+        padding: 20px 0; /* Μικραίνουμε το κενό στο πάνω μέρος */
+    }
+    .top-nav ul {
+        gap: 35px; /* Φέρνουμε τις λέξεις πιο κοντά για να χωράνε */
+    }
+    .top-nav a {
+        font-size: 0.9rem; /* Από 0.9rem */
+    }
+
+    /* --- 3. Γενικοί Τίτλοι Σελίδων (CV, Portfolio, Publications) --- */
+    .page-title {
+        font-size: 2rem; /* Από 2.5rem */
+        margin-bottom: 30px;
+    }
+    .content-page {
+        padding-top: 100px; /* Λιγότερο κενό πάνω από τους τίτλους στα κινητά */
+    }
+
+    /* --- 4. Σελίδα CV --- */
+    .cv-digital-container {
+        padding: 20px; /* Μικρότερο λευκό περιθώριο γύρω από το CV */
+    }
+    .cv-header h1 {
+        font-size: 1.8rem; /* Από 2.4rem */
+    }
+    .cv-header h2 {
+        font-size: 0.9rem; /* Από 1.1rem */
+    }
+    .cv-section h3 {
+        font-size: 1.1rem; /* Από 1.3rem */
+    }
+    .cv-pill {
+        font-size: 0.75rem; /* Μικραίνουμε τις "ταμπούλες" / κουτάκια */
+        padding: 4px 10px;
+    }
+    .cv-section p, .cv-section li {
+        font-size: 0.7rem; /* Μικραίνουμε το κείμενο στις παραγράφους/λίστες */
+    }
+
+    /* --- 5. Σελίδα Publications --- */
+    .pub-category h2 {
+        font-size: 1.15rem; /* Από 1.4rem */
+    }
+    .pub-list li {
+        font-size: 0.85rem; /* Από 0.95rem */
+    }
+}
