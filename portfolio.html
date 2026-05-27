@@ -8,29 +8,24 @@
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700&display=swap" rel="stylesheet">
     
     <style>
-        /* Animation μετάβασης */
         @keyframes morphToWhite {
             0% { background-color: #050505; color: #ffffff; }
             100% { background-color: #ffffff; color: #050505; }
         }
 
-        /* Η κλάση αυτή θα μπαίνει μόνο αν έρχεσαι από μαύρη σελίδα */
         .animate-bg {
-            animation: morphToWhite 2s ease-in-out forwards !important;
+            animation: morphToWhite 2s ease-in-out forwards;
         }
 
-        /* Default κατάσταση (λευκή σελίδα) */
-        body {
+        body, html {
             background-color: #ffffff;
             color: #050505;
         }
 
-        /* Ρυθμίσεις Μενού για Φωτεινό Φόντο */
         .top-nav a { color: #888888 !important; }
         .top-nav a:hover, .top-nav a.active { color: #050505 !important; }
         .top-nav a::after { background-color: #050505 !important; }
         
-        /* Ρυθμίσεις Περιεχομένου */
         .content-page {
             position: relative;
             width: 100%;
@@ -65,16 +60,12 @@
 </head>
 <body>
     <script>
-        // Λίστα με τις σελίδες που έχουν ΜΑΥΡΟ φόντο
-        const darkPages = ['index.html', 'Publications.html'];
-        const referrer = document.referrer;
-        
-        // Έλεγχος αν ο χρήστης ήρθε από μαύρη σελίδα ή αν άνοιξε το link απευθείας
-        const isFromDarkPage = referrer === '' || darkPages.some(page => referrer.includes(page));
-
-        if (isFromDarkPage) {
+        // Διαβάζουμε το χρώμα της προηγούμενης σελίδας
+        if (sessionStorage.getItem('themeOrigin') === 'dark') {
             document.body.classList.add('animate-bg');
         }
+        // Θέτουμε τη τρέχουσα σελίδα ως light για τα επόμενα κλικ
+        sessionStorage.setItem('themeOrigin', 'light');
     </script>
 
     <canvas id="bg-canvas"></canvas>
@@ -100,7 +91,6 @@
     <script src="script.js"></script>
     
     <script>
-        // Fade in μόνο για το περιεχόμενο (όχι όλο το body) για να μην χαλάει το λευκό φόντο
         const contentPage = document.querySelector('.content-page');
         contentPage.style.opacity = "0";
         window.addEventListener('load', () => {

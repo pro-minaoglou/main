@@ -246,3 +246,13 @@ CSS
 @view-transition {
     navigation: auto;
 }
+
+
+@keyframes morphToBlack {
+    0% { background-color: #ffffff; color: #050505; }
+    100% { background-color: #050505; color: #ffffff; }
+}
+
+.animate-bg-dark {
+    animation: morphToBlack 2s ease-in-out forwards;
+}

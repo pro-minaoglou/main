@@ -8,6 +8,14 @@
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700&display=swap" rel="stylesheet">
 </head>
 <body>
+    <script>
+        // Διαβάζουμε το χρώμα της προηγούμενης σελίδας
+        if (sessionStorage.getItem('themeOrigin') === 'light') {
+            document.body.classList.add('animate-bg-dark');
+        }
+        // Θέτουμε τη τρέχουσα σελίδα ως dark για τα επόμενα κλικ
+        sessionStorage.setItem('themeOrigin', 'dark');
+    </script>
 
     <canvas id="bg-canvas"></canvas>
     
@@ -24,9 +32,9 @@
     <main class="hero">
         <div class="hero-content">
             <div class="image-container">
-                <img src="profile.jpg" alt="Πορτρέτο Σχεδιαστή" class="profile-img">
+                <img src="https://i.postimg.cc/9f5CxN77/Screenshot-6.png" alt="Πορτρέτο Σχεδιαστή" class="profile-img">
             </div>
-            <h1 class="name">Όνομα Επώνυμο</h1>
+            <h1 class="name">Prodromos Minaoglou</h1>
             <p class="title">Industrial & Computational Designer</p>
             <p class="description">
                 Συνδυάζοντας τον βιομηχανικό σχεδιασμό με τον προγραμματισμό για τη δημιουργία 
