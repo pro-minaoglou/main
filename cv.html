@@ -70,6 +70,82 @@
             /* Κρύβει την εσωτερική μπάρα κύλισης αν δεν χρειάζεται */
             overflow: hidden; 
         }
+/* Container για το ψηφιακό CV */
+.cv-digital-container {
+    background: transparent;
+    padding: 20px 0;
+    font-family: 'Space Grotesk', sans-serif;
+    color: #050505; /* Μαύρο κείμενο όπως το έχεις ήδη στην CV σελίδα */
+}
+
+/* Μορφοποίηση των τίτλων που θα παράγονται αυτόματα */
+.cv-digital-container h1 {
+    font-size: 2.2rem;
+    margin-bottom: 5px;
+    font-weight: 700;
+    letter-spacing: -1px;
+}
+
+.cv-digital-container h2 {
+    font-size: 1.2rem;
+    color: #666666;
+    margin-bottom: 30px;
+    font-weight: 300;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.cv-digital-container h3 {
+    font-size: 1.4rem;
+    margin-top: 30px;
+    margin-bottom: 15px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    padding-bottom: 5px;
+    font-weight: 500;
+}
+
+/* Μορφοποίηση λιστών και κειμένου */
+.cv-digital-container ul {
+    list-style-type: square;
+    padding-left: 20px;
+    margin-bottom: 20px;
+}
+
+.cv-digital-container li {
+    margin-bottom: 12px;
+    line-height: 1.6;
+    font-weight: 300;
+}
+
+.cv-digital-container p {
+    line-height: 1.6;
+    font-weight: 300;
+    margin-bottom: 10px;
+}
+
+/* Στυλ για το κουμπί Download */
+.download-btn {
+    display: inline-block;
+    background: #050505;
+    color: #ffffff !important;
+    padding: 12px 25px;
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 500;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+}
+
+.download-btn:hover {
+    background: #444444;
+    transform: translateY(-2px);
+}
+
+
+
+
     </style>
 </head>
 <body>
@@ -97,10 +173,31 @@
         <div class="content-container">
             <h1 class="page-title">Curriculum Vitae</h1>
             
-            <div class="pdf-container">
-                <iframe src="https://docs.google.com/gview?url=https://minaoglou.com/cv.pdf&embedded=true" scrolling="yes" title="My CV">                    <p>Ο περιηγητής σας δεν υποστηρίζει την προβολή PDF. <a href="cv.pdf">Κατεβάστε το PDF εδώ</a>.</p>
-                </iframe>
-            </div>
+<div class="cv-digital-container" id="cv-content">
+    <p style="text-align:center; color:#888;">Φόρτωση βιογραφικού...</p>
+</div>
+
+<div style="text-align: center; margin-top: 40px;">
+    <a href="cv.pdf" download class="download-btn">Κατεβάστε το PDF</a>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+<script>
+    // Κώδικας που διαβάζει το cv.md και το τοποθετεί στη σελίδα
+    fetch('cv.md')
+        .then(response => {
+            if (!response.ok) throw new Error("Το αρχείο cv.md δεν βρέθηκε");
+            return response.text();
+        })
+        .then(text => {
+            document.getElementById('cv-content').innerHTML = marked.parse(text);
+        })
+        .catch(err => {
+            document.getElementById('cv-content').innerHTML = "<p>Σφάλμα κατά τη φόρτωση του βιογραφικού.</p>";
+            console.error(err);
+        });
+</script>
 
         </div>
     </main>
