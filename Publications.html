@@ -3,72 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Publications | Prodromos Minaoglou - Industrial & Computational Designer">
     <title>Publications | Industrial & Computational Designer</title>
-    <link rel="stylesheet" href="style.css">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700&display=swap" rel="stylesheet">
-
-
-
-
- <style>
-
-        .content-page {
-            position: relative;
-            width: 100%;
-            height: 100vh;
-            z-index: 2;
-            overflow-y: auto;
-            padding-top: 140px;
-            padding-bottom: 80px;
-            //color: #050505 !important;
-        }
-        .content-container {
-            max-width: 750px;
-            margin: 0 auto;
-            padding: 0 20px;
-            text-align: left;
-        }
-        .page-title {
-            font-size: 2.5rem;
-            margin-bottom: 30px;
-            text-align: center;
-            letter-spacing: -1px;
-            font-weight: 700;
-        }
-        .placeholder-text {
-            text-align: center;
-            //color: #666666;
-            font-weight: 300;
-            margin-top: 50px;
-            font-size: 1.1rem;
-        }
-    </style>
-
-   
-
-
-
-
-
-
-
-
-
-
+    
+    <link rel="stylesheet" href="style.css">
 </head>
-<body>
-    <script>
-        // Διαβάζουμε το χρώμα της προηγούμενης σελίδας
-        if (sessionStorage.getItem('themeOrigin') === 'light') {
-            document.body.classList.add('animate-bg-dark');
-        }
-        // Θέτουμε τη τρέχουσα σελίδα ως dark για τα επόμενα κλικ
-        sessionStorage.setItem('themeOrigin', 'dark');
-    </script>
+
+<body data-theme="dark">
 
     <canvas id="bg-canvas"></canvas>
     
-    <nav class="top-nav">
+    <nav class="top-nav" aria-label="Κεντρική Πλοήγηση">
         <ul>
             <li><a href="index.html">Home</a></li>
             <li><a href="portfolio.html">Portfolio</a></li>
@@ -92,29 +41,12 @@
                     </li>
                 </ul>
             </section>
-        </div>
+            
+            </div>
     </main>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="script.js"></script>
-<script>
-        // 1. Ομαλή εμφάνιση όλης της περιοχής περιεχομένου
-        const contentPage = document.querySelector('.content-page');
-        contentPage.style.opacity = "0";
-        window.addEventListener('load', () => {
-            contentPage.style.transition = "opacity 0.5s ease-in-out";
-            contentPage.style.opacity = "1";
-        });
-        
-        // 2. Σταδιακή εμφάνιση (stagger) των κειμένων με GSAP
-        gsap.from(".page-title, .pub-category h2, .pub-list li", {
-            y: 30,             // Τα στοιχεία έρχονται από 30 pixels πιο κάτω
-            opacity: 0,        // Ξεκινούν αόρατα
-            duration: 1,       // Η κίνηση διαρκεί 1 δευτερόλεπτο
-            stagger: 0.2,      // Κάθε στοιχείο εμφανίζεται 0.2 δευτερόλεπτα μετά το προηγούμενο
-            ease: "power3.out", // Ομαλό φρενάρισμα στο τέλος της κίνησης
-            delay: 0.4         // Ξεκινάει με 0.4 δευτερόλεπτα καθυστέρηση (για να προλάβει να γίνει η μετάβαση του φόντου)
-        });
-    </script>
+
 </body>
 </html>

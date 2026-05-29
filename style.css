@@ -1,4 +1,32 @@
-/* Βασική επαναφορά και ρυθμίσεις */
+/* ==========================================================================
+   STYLE.CSS - Κεντρικό Αρχείο Εμφάνισης (Refactored)
+   ========================================================================== */
+
+/* 1. CSS VARIABLES (Κεντρικός Έλεγχος Χρωμάτων & Διαστάσεων) */
+:root {
+    /* Σκούρο Θέμα (Default Dark Theme) */
+    --bg-color: #050505;
+    --text-color: #ffffff;
+    --text-grey: #888888;
+    --text-muted: #666666;
+    --accent-line: rgba(255, 255, 255, 0.15);
+    --cv-container-bg: #ffffff;
+    --cv-text-color: #050505;
+    --cv-card-bg: rgba(255, 255, 255, 0.8);
+    --cv-card-border: rgba(0, 0, 0, 0.08);
+    --nav-height: 140px;
+}
+
+/* Ρυθμίσεις για όταν η σελίδα έχει Light Theme */
+body[data-theme="light"] {
+    --bg-color: #ffffff;
+    --text-color: #050505;
+    --text-grey: #555555;
+    --text-muted: #777777;
+    --accent-line: rgba(0, 0, 0, 0.1);
+}
+
+/* 2. RESET & BASE STYLES */
 * {
     margin: 0;
     padding: 0;
@@ -9,23 +37,98 @@ body, html {
     width: 100%;
     height: 100%;
     font-family: 'Space Grotesk', sans-serif;
-    background-color: #050505; /* Πολύ σκούρο γκρι/μαύρο */
-    color: #ffffff;
-    overflow: hidden; /* Κρύβουμε τις μπάρες κύλισης για την κεντρική οθόνη */
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    overflow: hidden; /* Κλειδώνει το scroll στο κυρίως body για να δουλέψει σωστά το εσωτερικό scroll */
 }
 
-/* Ρυθμίσεις για τον καμβά του φόντου */
+/* Καμβάς διαδραστικού φόντου */
 #bg-canvas {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: 1; /* Πίσω από το περιεχόμενο */
-    pointer-events: none; /* Επιτρέπει στα κλικ να περνούν από μέσα του */
+    z-index: 1;
+    pointer-events: none;
 }
 
-/* Κεντράρισμα του περιεχομένου */
+/* 3. TRANSITION ANIMATIONS (Theme Morphing) */
+@keyframes morphToWhite {
+    0% { background-color: #050505; color: #ffffff; }
+    100% { background-color: #ffffff; color: #050505; }
+}
+
+@keyframes morphToBlack {
+    0% { background-color: #ffffff; color: #050505; }
+    100% { background-color: #050505; color: #ffffff; }
+}
+
+.animate-bg {
+    animation: morphToWhite 2s ease-in-out forwards;
+}
+
+.animate-bg-dark {
+    animation: morphToBlack 2s ease-in-out forwards;
+}
+
+/* 4. NAVIGATION BAR (Top Nav) */
+.top-nav {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 40px 0;
+    z-index: 10;
+    display: flex;
+    justify-content: center;
+    transition: transform 0.3s ease-in-out;
+}
+
+.top-nav ul {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 40px;
+}
+
+.top-nav a {
+    text-decoration: none;
+    color: var(--text-grey);
+    font-size: 0.9rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    padding-bottom: 5px;
+    position: relative;
+    transition: color 0.3s ease;
+}
+
+.top-nav a:hover,
+.top-nav a.active {
+    color: var(--text-color);
+}
+
+/* Εφέ γραμμής κάτω από τα links */
+.top-nav a::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 1px;
+    bottom: 0;
+    left: 50%;
+    background-color: var(--text-color);
+    transform: translateX(-50%);
+    transition: width 0.3s ease;
+}
+
+.top-nav a:hover::after,
+.top-nav a.active::after {
+    width: 100%;
+}
+
+/* 5. ΔΟΜΗ ΣΕΛΙΔΩΝ (Hero & Layouts) */
 .hero {
     position: relative;
     width: 100%;
@@ -33,7 +136,7 @@ body, html {
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 2; /* Μπροστά από τον καμβά */
+    z-index: 2;
     text-align: center;
 }
 
@@ -42,30 +145,29 @@ body, html {
     padding: 20px;
 }
 
-/* Στυλ φωτογραφίας */
-.image-container {
-    margin-bottom: 25px;
+.content-page {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    z-index: 2;
+    overflow-y: auto;
+    padding-top: var(--nav-height);
+    padding-bottom: 80px;
+    scrollbar-width: none; /* Απόκρυψη scrollbar σε Firefox */
 }
 
-.profile-img {
-    width: 180px;
-    height: 180px;
-    border-radius: 50%;
-    object-fit: cover;
-    filter: grayscale(100%) contrast(1.2);
-    transition: all 0.5s ease;
-    border: 2px solid rgba(255, 255, 255, 0.1);
+.content-page::-webkit-scrollbar {
+    display: none; /* Απόκρυψη scrollbar σε Chrome/Safari */
 }
 
-/* Εφέ στη φωτογραφία όταν περνάει το ποντίκι */
-.profile-img:hover {
-    filter: grayscale(0%);
-    transform: scale(1.05);
-    border-color: #ffffff;
-    box-shadow: 0 0 30px rgba(255, 255, 255, 0.2);
+.content-container {
+    max-width: 750px;
+    margin: 0 auto;
+    padding: 0 20px;
+    text-align: left;
 }
 
-/* Τυπογραφία */
+/* 6. ΤΥΠΟΓΡΑΦΙΑ & ΣΤΟΙΧΕΙΑ ΣΕΛΙΔΩΝ */
 .name {
     font-size: 3.5rem;
     font-weight: 700;
@@ -76,7 +178,7 @@ body, html {
 .title {
     font-size: 1.2rem;
     font-weight: 500;
-    color: #888888;
+    color: var(--text-grey);
     margin-bottom: 20px;
     text-transform: uppercase;
     letter-spacing: 2px;
@@ -87,108 +189,59 @@ body, html {
     font-weight: 300;
     line-height: 1.6;
     color: #cccccc;
+    transition: color 0.3s ease;
 }
 
-/* --- Μενού Πλοήγησης (Top Nav) --- */
-.top-nav {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    padding: 40px 0;
-    z-index: 10; /* Πάνω από τον καμβά και το περιεχόμενο */
-    display: flex;
-    justify-content: center;
-	transition: transform 0.3s ease-in-out;
-}
-
-.top-nav ul {
-    list-style: none;
-    display: flex;
-    flex-wrap: wrap; /* Σε περίπτωση μικρής οθόνης να μην κόβεται */
-    justify-content: center;
-    gap: 40px; /* Κενό ανάμεσα στις καρτέλες */
-}
-
-.top-nav a {
-    text-decoration: none;
-    color: #888888;
-    font-size: 0.9rem;
-    font-weight: 500;
-    text-transform: uppercase;
-    letter-spacing: 1.5px;
-    transition: all 0.3s ease;
-    padding-bottom: 5px;
-    position: relative;
-}
-
-/* Εφέ Hover και Active κατάστασης */
-.top-nav a:hover,
-.top-nav a.active {
-    color: #ffffff;
-}
-
-/* Μικρή γραμμή που εμφανίζεται από κάτω στο hover */
-.top-nav a::after {
-    content: '';
-    position: absolute;
-    width: 0;
-    height: 1px;
-    bottom: 0;
-    left: 50%;
-    background-color: #ffffff;
-    transition: all 0.3s ease;
-    transform: translateX(-50%);
-}
-
-.top-nav a:hover::after,
-.top-nav a.active::after {
-    width: 100%;
-}
-
-
-/* --- Σελίδες Περιεχομένου (Publications, CV, κλπ) --- */
-.content-page {
-    position: relative;
-    width: 100%;
-    height: 100vh;
-    z-index: 2;
-    overflow-y: auto; /* Επιτρέπει το σκρολάρισμα προς τα κάτω */
-    padding-top: 140px; /* Χώρος πάνω για να μην κρύβονται από το μενού */
-    padding-bottom: 80px;
-}
-
-/* Για να κρύψουμε την μπάρα κύλισης αν θέλουμε πιο καθαρό look (προαιρετικό) */
-.content-page::-webkit-scrollbar {
-    display: none;
-}
-.content-page {
-    -ms-overflow-style: none;  
-    scrollbar-width: none;  
-}
-
-.content-container {
-    max-width: 750px;
-    margin: 0 auto;
-    padding: 0 20px;
-    text-align: left; /* Στοίχιση αριστερά για πιο ευανάγνωστο κείμενο */
+body[data-theme="light"] .description {
+    color: #444444;
 }
 
 .page-title {
     font-size: 2.5rem;
-    margin-bottom: 50px;
+    margin-bottom: 30px;
     text-align: center;
     letter-spacing: -1px;
+    font-weight: 700;
 }
 
+.placeholder-text {
+    text-align: center;
+    color: var(--text-muted);
+    font-weight: 300;
+    margin-top: 50px;
+    font-size: 1.1rem;
+}
+
+/* Εικόνα Προφίλ */
+.image-container {
+    margin-bottom: 25px;
+}
+
+.profile-img {
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+    object-fit: cover;
+    filter: grayscale(100%) contrast(1.2);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.5s ease;
+}
+
+.profile-img:hover {
+    filter: grayscale(0%);
+    transform: scale(1.05);
+    border-color: var(--text-color);
+    box-shadow: 0 0 30px rgba(255, 255, 255, 0.2);
+}
+
+/* 7. ΔΗΜΟΣΙΕΥΣΕΙΣ (Publications) */
 .pub-category {
     margin-bottom: 50px;
 }
 
 .pub-category h2 {
     font-size: 1.4rem;
-    color: #ffffff;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+    border-bottom: 1px solid var(--accent-line);
     padding-bottom: 10px;
     margin-bottom: 25px;
     font-weight: 500;
@@ -198,136 +251,158 @@ body, html {
 
 .pub-list {
     list-style: none;
-    padding: 0;
 }
 
 .pub-list li {
     margin-bottom: 25px;
-    color: #cccccc;
+    color: var(--text-grey);
     font-size: 0.95rem;
     line-height: 1.6;
     font-weight: 300;
 }
 
 .pub-list strong {
-    color: #ffffff;
+    color: var(--text-color);
     font-size: 1.1rem;
     font-weight: 500;
 }
 
 .pub-link {
-    color: #888888;
+    color: var(--text-grey);
     text-decoration: none;
     font-size: 0.85rem;
     font-weight: 500;
-    transition: color 0.3s ease;
     display: inline-block;
     margin-top: 5px;
+    transition: color 0.3s ease;
 }
 
 .pub-link:hover {
-    color: #ffffff;
+    color: var(--text-color);
 }
 
-/* --- Γενικές ρυθμίσεις για τις νέες λευκές σελίδες --- */
-.content-page {
+/* 8. ΨΗΦΙΑΚΟ ΒΙΟΓΡΑΦΙΚΟ (CV Components) */
+.cv-digital-container {
+    background: var(--cv-container-bg);
+    padding: 10px;
+    border-radius: 20px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.04);
     position: relative;
-    width: 100%;
-    height: 100vh;
-    z-index: 2;
-    overflow-y: auto;
-    padding-top: 140px;
-    padding-bottom: 80px;
+    z-index: 3;
+    color: var(--cv-text-color);
 }
 
-/* Απόκρυψη scrollbar για αισθητική */
-.content-page::-webkit-scrollbar { display: none; }
-
-CSS
-@view-transition {
-    navigation: auto;
+.cv-section {
+    border: 1px solid var(--cv-card-border);
+    background: var(--cv-card-bg);
+    border-radius: 14px;
+    padding: 30px;
+    margin-bottom: 30px;
 }
 
-
-@keyframes morphToBlack {
-    0% { background-color: #ffffff; color: #050505; }
-    100% { background-color: #050505; color: #ffffff; }
+.cv-section h3 {
+    font-size: 1.3rem;
+    margin-bottom: 25px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--cv-text-color);
+    display: inline-block;
+    border-bottom: 2px solid var(--cv-text-color);
+    padding-bottom: 3px;
 }
 
-.animate-bg-dark {
-    animation: morphToBlack 2s ease-in-out forwards;
+.cv-section ul {
+    padding-left: 20px;
 }
 
+.cv-section li {
+    margin-bottom: 12px;
+    color: #333333;
+    font-weight: 300;
+    font-size: 0.95rem;
+    line-height: 1.2;                  
+    text-align: justify;
+    font-family: 'Ubuntu', sans-serif;
+	
+}
 
+.cv-section li strong {
+    font-weight: 700;
+    color: var(--cv-text-color);
+}
+
+/* Skills Badges */
+.skills-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.cv-pill.skill {
+    background: #ffffff;
+    color: #050505;
+    border: 1px solid rgba(0, 0, 0, 0.12);
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+}
+
+.cv-pill.skill:hover {
+    background: #050505;
+    color: #ffffff;
+    border-color: #050505;
+}
+
+/* Download PDF Button */
+.download-btn {
+    display: inline-block;
+    background: var(--cv-text-color);
+    color: #ffffff;
+    padding: 12px 25px;
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 500;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+    position: relative;
+    z-index: 4;
+}
+
+.download-btn:hover {
+    background: #444444;
+    transform: translateY(-2px);
+}
 
 /* ==========================================================================
-   ΡΥΘΜΙΣΕΙΣ ΓΙΑ ΚΙΝΗΤΑ (Οθόνες μικρότερες από 768px)
+   9. MEDIA QUERIES (Προσαρμογή για Κινητά & Tablets)
    ========================================================================== */
 @media (max-width: 768px) {
-    
-    /* --- 1. Αρχική Σελίδα (Home) --- */
-    .name {
-        font-size: 2.2rem; /* Από 3.5rem */
-    }
-    .title {
-        font-size: 0.95rem; /* Από 1.2rem */
-        letter-spacing: 1.5px;
-    }
-    .description {
-        font-size: 0.9rem; /* Από 1rem */
-    }
-    .profile-img {
-        width: 140px; /* Μικραίνουμε λίγο και τη φωτογραφία */
-        height: 140px;
-    }
+    .name { font-size: 2.2rem; }
+    .title { font-size: 0.95rem; letter-spacing: 1.5px; }
+    .description { font-size: 0.9rem; }
+    .profile-img { width: 140px; height: 140px; }
 
-    /* --- 2. Μενού Πλοήγησης (Top Nav) --- */
-    .top-nav {
-        padding: 20px 0; /* Μικραίνουμε το κενό στο πάνω μέρος */
-    }
-    .top-nav ul {
-        gap: 35px; /* Φέρνουμε τις λέξεις πιο κοντά για να χωράνε */
-    }
-    .top-nav a {
-        font-size: 0.9rem; /* Από 0.9rem */
-    }
+    .top-nav { padding: 20px 0; }
+    .top-nav ul { gap: 25px; }
+    .top-nav a { font-size: 0.8rem; letter-spacing: 1px; }
 
-    /* --- 3. Γενικοί Τίτλοι Σελίδων (CV, Portfolio, Publications) --- */
-    .page-title {
-        font-size: 2rem; /* Από 2.5rem */
-        margin-bottom: 30px;
-    }
-    .content-page {
-        padding-top: 100px; /* Λιγότερο κενό πάνω από τους τίτλους στα κινητά */
-    }
+    .page-title { font-size: 2rem; margin-bottom: 20px; }
+    .content-page { padding-top: 110px; }
 
-    /* --- 4. Σελίδα CV --- */
-    .cv-digital-container {
-        padding: 20px; /* Μικρότερο λευκό περιθώριο γύρω από το CV */
-    }
-    .cv-header h1 {
-        font-size: 1.8rem; /* Από 2.4rem */
-    }
-    .cv-header h2 {
-        font-size: 0.9rem; /* Από 1.1rem */
-    }
-    .cv-section h3 {
-        font-size: 1.1rem; /* Από 1.3rem */
-    }
-    .cv-pill {
-        font-size: 0.75rem; /* Μικραίνουμε τις "ταμπούλες" / κουτάκια */
-        padding: 4px 10px;
-    }
-    .cv-section p, .cv-section li {
-        font-size: 0.7rem; /* Μικραίνουμε το κείμενο στις παραγράφους/λίστες */
-    }
+    .cv-digital-container { padding: 15px; }
+    .cv-section { padding: 20px; margin-bottom: 20px; }
+    .cv-section h3 { font-size: 1.1rem; margin-bottom: 15px; }
+    .cv-section li { font-size: 0.85rem; margin-bottom: 10px; }
 
-    /* --- 5. Σελίδα Publications --- */
-    .pub-category h2 {
-        font-size: 1.15rem; /* Από 1.4rem */
-    }
-    .pub-list li {
-        font-size: 0.85rem; /* Από 0.95rem */
-    }
-	
+    .pub-category h2 { font-size: 1.15rem; }
+    .pub-list li { font-size: 0.85rem; }
+}
+
+/* Native View Transitions (Chrome / Safari Edge Support) */
+@view-transition {
+    navigation: auto;
 }
