@@ -36,7 +36,7 @@ body[data-theme="light"] {
 body, html {
     width: 100%;
     height: 100%;
-    font-family: 'Space Grotesk', sans-serif;
+    font-family: 'Source Sans 3', sans-serif;
     background-color: var(--bg-color);
     color: var(--text-color);
     overflow: hidden; /* Κλειδώνει το scroll στο κυρίως body για να δουλέψει σωστά το εσωτερικό scroll */
@@ -83,6 +83,7 @@ body, html {
     display: flex;
     justify-content: center;
     transition: transform 0.3s ease-in-out;
+	pointer-events: none;
 }
 
 .top-nav ul {
@@ -91,6 +92,7 @@ body, html {
     flex-wrap: wrap;
     justify-content: center;
     gap: 40px;
+	pointer-events: auto;
 }
 
 .top-nav a {
@@ -153,12 +155,10 @@ body, html {
     overflow-y: auto;
     padding-top: var(--nav-height);
     padding-bottom: 80px;
-    scrollbar-width: none; /* Απόκρυψη scrollbar σε Firefox */
+    
 }
 
-.content-page::-webkit-scrollbar {
-    display: none; /* Απόκρυψη scrollbar σε Chrome/Safari */
-}
+
 
 .content-container {
     max-width: 750px;
@@ -234,52 +234,80 @@ body[data-theme="light"] .description {
     box-shadow: 0 0 30px rgba(255, 255, 255, 0.2);
 }
 
-/* 7. ΔΗΜΟΣΙΕΥΣΕΙΣ (Publications) */
-.pub-category {
-    margin-bottom: 50px;
+
+
+
+
+
+
+/* ==========================================================================
+   Publications (Δημοσιεύσεις) - Ειδικά Στυλ Τυπογραφίας (Style: geometric sans-serif)
+   ========================================================================== */
+
+/* Γενικός επιλογέας για να εφαρμόσουμε τη γραμματοσειρά 'Space Grotesk' */
+.pub-category,
+.pub-list {
+    font-family: 'Space Grotesk', sans-serif;
 }
 
+.pub-category { 
+    margin-bottom: 50px; 
+}
+
+/* 1. "JOURNALS" (Τίτλος Κατηγορίας) */
 .pub-category h2 {
     font-size: 1.4rem;
-    border-bottom: 1px solid var(--accent-line);
-    padding-bottom: 10px;
-    margin-bottom: 25px;
-    font-weight: 500;
-    letter-spacing: 1px;
-    text-transform: uppercase;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.15); /* Αχνή γραμμή */
+    padding-bottom: 5px;
+    margin-bottom: 30px;
+    
+    color: var(--text-color); /* Λευκό */
+    font-weight: 500; /* Μέτριο βάρος */
+    text-transform: uppercase; /* Κεφαλαία */
+    letter-spacing: 0.25em; /* Σημαντική απόσταση γραμμάτων (π.χ. 4px) */
 }
 
-.pub-list {
-    list-style: none;
+.pub-list { 
+    list-style: none; 
+    padding: 0; 
 }
 
+/* 2. Στοιχεία Λίστας (Περιοδικό, Έτος) */
 .pub-list li {
-    margin-bottom: 25px;
-    color: var(--text-grey);
+    margin-bottom: 15px;
+    color: var(--text-grey); /* Γκρι (π.χ. #888888) */
     font-size: 0.95rem;
-    line-height: 1.6;
-    font-weight: 300;
+    line-height: 1.1;
+    font-weight: 300; /* Ελαφρύ βάρος */
 }
 
+/* 3. "Parametric Design..." (Τίτλος Άρθρου) */
 .pub-list strong {
-    color: var(--text-color);
+    color: var(--text-color); /* Λευκό */
     font-size: 1.1rem;
-    font-weight: 500;
+    font-weight: 700; /* Έντονο βάρος (Bold) */
+    display: block; /* Για να μπαίνει ο τίτλος σε νέα γραμμή */
+    margin-bottom: -15px; /* Λίγος χώρος κάτω από τον τίτλο */
+	
 }
 
+/* 4. "Read Article ->" (Σύνδεσμος) */
 .pub-link {
-    color: var(--text-grey);
+    color: var(--text-grey); /* Γκρι */
     text-decoration: none;
     font-size: 0.85rem;
-    font-weight: 500;
+    font-weight: 300; /* Ελαφρύ βάρος */
+    transition: color 0.3s ease;
     display: inline-block;
     margin-top: 5px;
-    transition: color 0.3s ease;
 }
 
-.pub-link:hover {
-    color: var(--text-color);
+.pub-link:hover { 
+    color: var(--text-color); /* Λευκό στο hover */ 
 }
+
+
+
 
 /* 8. ΨΗΦΙΑΚΟ ΒΙΟΓΡΑΦΙΚΟ (CV Components) */
 .cv-digital-container {
@@ -321,10 +349,8 @@ body[data-theme="light"] .description {
     color: #333333;
     font-weight: 300;
     font-size: 0.95rem;
-    line-height: 1.2;                  
+    line-height: 1.0;
     text-align: justify;
-    font-family: 'Ubuntu', sans-serif;
-	
 }
 
 .cv-section li strong {
@@ -393,16 +419,326 @@ body[data-theme="light"] .description {
     .page-title { font-size: 2rem; margin-bottom: 20px; }
     .content-page { padding-top: 110px; }
 
-    .cv-digital-container { padding: 15px; }
-    .cv-section { padding: 20px; margin-bottom: 20px; }
-    .cv-section h3 { font-size: 1.1rem; margin-bottom: 15px; }
-    .cv-section li { font-size: 0.85rem; margin-bottom: 10px; }
+    .cv-digital-container { padding: 10px; }
+    .cv-section { padding: 10px; margin-bottom: 20px; }
+    .cv-section h3 { font-size: 1.0rem; margin-bottom: 15px; }
+    .cv-section li { font-size: 0.75rem; margin-bottom: 10px; }
+    .content-container { padding: 0 0px;}
 
-    .pub-category h2 { font-size: 1.15rem; }
-    .pub-list li { font-size: 0.85rem; }
+    .pub-category h2 { font-size: 1.2rem; padding: 0 20px; }
+    .pub-list li { font-size: 0.75rem; padding: 0 20px;}
+	.pub-list strong {font-size: 0.9rem;}
+	
+	.pub-list strong {margin-bottom: -10px;}
 }
 
 /* Native View Transitions (Chrome / Safari Edge Support) */
 @view-transition {
     navigation: auto;
+}
+
+/* Κουμπί Δημοσιεύσεων (Publications Link) - Τελική Μορφή */
+.cv-link-btn {
+     
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    
+    background-color: #ffffff;
+    color: #050505 !important;
+    
+    width: 35px;        
+    height: 20px;        
+    border-radius: 10px;
+    
+    
+    font-size: 1.5rem;  
+    text-decoration: none;
+      
+    vertical-align: middle; 
+    transition: all 0.2s ease;
+    line-height: 0;      /* 4. Το μηδενίζουμε για να μην μπερδεύει την κατακόρυφη στοίχιση */
+	-webkit-text-stroke: 0.4px #ffffff; 
+	position: relative;
+    top: -1.5px; 
+	
+}
+
+.cv-link-btn:hover {
+    background-color: #050505;
+    color: #ffffff !important;
+    -webkit-text-stroke: 0.4px #202020; 
+    
+
+}
+
+body[data-theme="light"] .cv-link-btn {
+    background-color: #ffffff;
+    color: #050505 !important;
+    border: 1px solid #ffffff;
+}
+
+body[data-theme="light"] .cv-link-btn:hover {
+    background-color: #202020;
+    color: #ffffff !important;
+}
+
+
+/* ==========================================================================
+   10. BOOKS PAGE STYLES (Tziola Publications)
+   ========================================================================== */
+
+/* Ανοίγουμε λίγο το πλάτος για να χωρέσουν άνετα δίπλα-δίπλα */
+.books-container {
+    max-width: 950px;
+}
+
+
+
+/* Οριζόντια Διαχωριστική Γραμμή (Απαλό βεραμάν/γαλάζιο) */
+.book-divider {
+    border: 0;
+    height: 1px;
+    background-color: #353535; 
+    margin: 20px 0;
+}
+
+/* Δομή Γραμμής Βιβλίου (Κείμενο Αριστερά - Εικόνα Δεξιά) */
+.book-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 30px;
+    margin: 20px 0;
+}
+
+/* Κεντράρισμα του κειμένου μέσα στον δικό του χώρο */
+.book-info {
+    flex: 1.2;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.book-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #000000;
+    margin-bottom: 25px;
+    letter-spacing: 0.5px;
+}
+
+/* Στυλ συγγραφέων */
+.book-authors {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: #000000;
+    line-height: 1.8;
+    margin-bottom: 35px;
+}
+
+/* Κεραμιδί/Κόκκινο χρώμα για τα ονόματα */
+.author-name {
+    text-decoration: none;
+    transition: opacity 0.3s ease;
+    color: #a13d33; 
+    margin: 0 4px;
+}
+
+/* Κουμπί BOOK */
+.book-btn {
+    background-color: #3a3b3c;
+    color: #ffffff;
+    text-decoration: none;
+    padding: 10px 14px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    font-size: 0.95rem;
+    border-radius: 2px;
+    transition: background-color 0.3s ease;
+}
+
+.book-btn:hover {
+    background-color: #1a1a1a;
+    color: #ffffff;
+}
+
+/* Εικόνα Βιβλίου */
+.book-image {
+    flex: 0.8;
+    display: flex;
+    justify-content: center;
+}
+
+.book-image img {
+    max-width: 150px;
+    height: auto;
+    box-shadow: -5px 10px 25px rgba(0, 0, 0, 0.15); 
+}
+
+
+
+/* ==========================================================================
+   RESPONSIVE: Προσαρμογή για Κινητά
+   ========================================================================== */
+@media (max-width: 768px) {
+    .book-row {
+        flex-direction: column; /* Στα κινητά μπαίνουν το ένα κάτω από το άλλο */
+    }
+    
+    .book-image {
+        order: -1; /* Φέρνει την εικόνα του βιβλίου πάνω από το κείμενο στις μικρές οθόνες */
+        margin-bottom: 10px;
+    }
+
+    .tziola-title {
+        font-size: 1.5rem;
+    }
+	
+	.book-authors {
+		font-size: 0.7rem;
+		margin-bottom: 10px;
+		padding: 0 20px;
+		
+		
+		
+	}
+	
+	.book-title {
+		font-size: 0.7rem;
+	}
+
+    
+}
+	
+}
+
+
+/* ==========================================================================
+   11. IMAGE MODAL / LIGHTBOX (Εφέ Μεγέθυνσης Εικόνων)
+   ========================================================================== */
+
+/* Ο κέρσορας γίνεται 'χεράκι' και η εικόνα μεγαλώνει ελαφρώς στο hover για να δείξει ότι είναι κλικαρίσιμη */
+.book-image img {
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.book-image img:hover {
+    transform: scale(1.05);
+}
+
+/* Το μαύρο φόντο που καλύπτει όλη την οθόνη */
+.modal {
+    display: none; /* Κρυφό από προεπιλογή */
+    position: fixed;
+    z-index: 9999; /* Πολύ υψηλό z-index για να είναι πάνω από όλα (nav, canvas κλπ) */
+    padding-top: 60px;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.85); /* Μαύρο με διαφάνεια */
+    backdrop-filter: blur(5px); /* Θόλωμα του φόντου από πίσω */
+}
+
+/* Η μεγάλη εικόνα στο κέντρο */
+.modal-content {
+    margin: auto;
+    display: block;
+    max-width: 90%;
+    max-height: 80vh; /* Δεν θα ξεπερνάει το 80% του ύψους της οθόνης */
+    object-fit: contain;
+    box-shadow: 0 5px 25px rgba(0,0,0,0.5);
+    animation: zoomIn 0.3s ease; /* Εφέ εμφάνισης */
+}
+
+/* Εφέ Zoom-in όταν ανοίγει */
+@keyframes zoomIn {
+    from { transform: scale(0.8); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+
+/* Το κουμπί κλεισίματος (X) πάνω δεξιά */
+.close-modal {
+    position: absolute;
+    top: 30px;
+    right: 40px;
+    color: #f1f1f1;
+    font-size: 40px;
+    font-weight: bold;
+    transition: 0.3s;
+    cursor: pointer;
+}
+
+.close-modal:hover,
+.close-modal:focus {
+    color: #a13d33;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+
+
+
+/* ==========================================================================
+   12. PORTFOLIO PAGE STYLES (Ζευγαρωτές Εικόνες)
+   ========================================================================== */
+
+/* Δίνουμε μεγαλύτερο πλάτος στη σελίδα για να χωράνε άνετα οι δύο στήλες */
+.portfolio-container {
+    max-width: 1100px;
+}
+
+/* Δημιουργία πλέγματος 2 στηλών για υπολογιστές */
+.portfolio-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* 1 στήλη αριστερά, 1 δεξιά */
+    gap: 25px; /* Απόσταση μεταξύ των εικόνων */
+    margin-top: 30px;
+    margin-bottom: 50px;
+}
+
+/* Στυλ για το πλαίσιο της κάθε εικόνας */
+.portfolio-item {
+    width: 100%;
+    overflow: hidden;
+    border-radius: 6px; /* Ελαφρώς στρογγυλεμένες γωνίες */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08); /* Διακριτική σκιά */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.portfolio-item img {
+    width: 100%;
+    height: auto;
+    display: block;
+    object-fit: cover;
+}
+
+/* Εφέ hover: Η εικόνα ανασηκώνεται ελαφρώς όταν περνάει το ποντίκι */
+.portfolio-item:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+/* RESPONSIVE: Μετατροπή σε 1 στήλη για κινητά */
+@media (max-width: 768px) {
+    .portfolio-grid {
+        grid-template-columns: 1fr; /* Μία εικόνα ανά σειρά */
+        gap: 15px; /* Μικρότερο κενό στα κινητά */
+    }
+    
+    .portfolio-container {
+        padding: 0 20px; /* Απόσταση από τις άκρες της οθόνης */
+    }
+}
+
+
+/* ==========================================================================
+   CUSTOM SCROLLBAR (Οπτικό εφέ κύκλου σε λεπτή γραμμή)
+   ========================================================================== */
+
+* {
+    scrollbar-color: var(--text-color) transparent;
 }

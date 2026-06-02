@@ -8,6 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initSwipeNavigation();
     initScrollNavbar();
     initCanvasBackground();
+	initLightbox();
 });
 
 // ==========================================================================
@@ -282,4 +283,44 @@ function initCanvasBackground() {
         ctx.restore(); requestAnimationFrame(animate);
     }
     resize(); requestAnimationFrame(animate);
+}
+
+
+
+// ==========================================================================
+// 6. IMAGE MODAL / LIGHTBOX (Λειτουργία Μεγέθυνσης Εικόνων)
+// ==========================================================================
+function initLightbox() {
+    const modal = document.getElementById("image-modal");
+    const modalImg = document.getElementById("expanded-img");
+    const closeModalBtn = document.querySelector(".close-modal");
+    
+    // Αν δεν υπάρχει το modal στη σελίδα (π.χ. στην αρχική), σταματάμε εδώ
+    if (!modal || !modalImg) return; 
+
+    // Βρίσκουμε όλες τις εικόνες των βιβλίων
+    const bookImages = document.querySelectorAll(".book-image img");
+
+    // Προσθέτουμε τη λειτουργία του κλικ σε κάθε εικόνα
+    bookImages.forEach(img => {
+        img.addEventListener("click", function(event) {
+            event.stopPropagation();        // Αποτρέπει συγκρούσεις με άλλα κλικ
+            modal.style.display = "block";  // Εμφανίζουμε το μαύρο φόντο
+            modalImg.src = this.src;        // Φέρνουμε τη μεγάλη εικόνα
+        });
+    });
+
+    // Κλείσιμο του modal όταν πατηθεί το 'X'
+    if (closeModalBtn) {
+        closeModalBtn.addEventListener("click", () => {
+            modal.style.display = "none";
+        });
+    }
+
+    // Κλείσιμο του modal αν ο χρήστης κάνει κλικ στο μαύρο φόντο
+    window.addEventListener("click", (event) => {
+        if (event.target === modal) {
+            modal.style.display = "none";
+        }
+    });
 }
