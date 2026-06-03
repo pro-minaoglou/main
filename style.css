@@ -468,7 +468,7 @@ body[data-theme="light"] .description {
     vertical-align: middle; 
     transition: all 0.2s ease;
     line-height: 0;      /* 4. Το μηδενίζουμε για να μην μπερδεύει την κατακόρυφη στοίχιση */
-	-webkit-text-stroke: 0.5px #aa0505; 
+	-webkit-text-stroke: 0.2px #aa0505; 
 	position: relative;
     top: -1.5px; 
 	
@@ -552,7 +552,7 @@ body[data-theme="light"] .cv-link-btn:hover {
 .author-name {
     text-decoration: none;
     transition: opacity 0.3s ease;
-    color: #a13d33; 
+    color: #aa0505; 
     margin: 0 4px;
 }
 
