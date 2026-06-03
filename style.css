@@ -1,10 +1,16 @@
 /* ==========================================================================
-   STYLE.CSS - Κεντρικό Αρχείο Εμφάνισης (Refactored)
+   STYLE.CSS - Κεντρικό Αρχείο Εμφάνισης (Refactored & Optimized)
    ========================================================================== */
 
-/* 1. CSS VARIABLES (Κεντρικός Έλεγχος Χρωμάτων & Διαστάσεων) */
+
+
+
+
+/* --------------------------------------------------------------------------
+   1. CSS VARIABLES (Χρώματα & Διαστάσεις)
+   -------------------------------------------------------------------------- */
 :root {
-    /* Σκούρο Θέμα (Default Dark Theme) */
+    /* Default Dark Theme */
     --bg-color: #050505;
     --text-color: #ffffff;
     --text-grey: #888888;
@@ -17,7 +23,6 @@
     --nav-height: 140px;
 }
 
-/* Ρυθμίσεις για όταν η σελίδα έχει Light Theme */
 body[data-theme="light"] {
     --bg-color: #ffffff;
     --text-color: #050505;
@@ -26,11 +31,22 @@ body[data-theme="light"] {
     --accent-line: rgba(0, 0, 0, 0.1);
 }
 
-/* 2. RESET & BASE STYLES */
+
+
+
+
+
+
+
+
+/* --------------------------------------------------------------------------
+   2. RESET & BASE STYLES
+   -------------------------------------------------------------------------- */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    scrollbar-color: var(--text-color) transparent; /* Custom Scrollbar */
 }
 
 body, html {
@@ -39,21 +55,33 @@ body, html {
     font-family: 'Source Sans 3', sans-serif;
     background-color: var(--bg-color);
     color: var(--text-color);
-    overflow: hidden; /* Κλειδώνει το scroll στο κυρίως body για να δουλέψει σωστά το εσωτερικό scroll */
+    overflow: hidden; 
 }
 
-/* Καμβάς διαδραστικού φόντου */
 #bg-canvas {
     position: absolute;
-    top: 0;
-    left: 0;
+    inset: 0; /* Shorthand για top:0; right:0; bottom:0; left:0; */
     width: 100%;
     height: 100%;
     z-index: 1;
     pointer-events: none;
 }
 
-/* 3. TRANSITION ANIMATIONS (Theme Morphing) */
+/* Native View Transitions */
+@view-transition {
+    navigation: auto;
+}
+
+
+
+
+
+
+
+
+/* --------------------------------------------------------------------------
+   3. ANIMATIONS
+   -------------------------------------------------------------------------- */
 @keyframes morphToWhite {
     0% { background-color: #050505; color: #ffffff; }
     100% { background-color: #ffffff; color: #050505; }
@@ -64,15 +92,24 @@ body, html {
     100% { background-color: #050505; color: #ffffff; }
 }
 
-.animate-bg {
-    animation: morphToWhite 2s ease-in-out forwards;
+.animate-bg { animation: morphToWhite 2s ease-in-out forwards; }
+.animate-bg-dark { animation: morphToBlack 2s ease-in-out forwards; }
+
+@keyframes zoomIn {
+    from { transform: scale(0.8); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
 }
 
-.animate-bg-dark {
-    animation: morphToBlack 2s ease-in-out forwards;
-}
 
-/* 4. NAVIGATION BAR (Top Nav) */
+
+
+
+
+
+
+/* --------------------------------------------------------------------------
+   4. NAVIGATION BAR
+   -------------------------------------------------------------------------- */
 .top-nav {
     position: absolute;
     top: 0;
@@ -83,7 +120,8 @@ body, html {
     display: flex;
     justify-content: center;
     transition: transform 0.3s ease-in-out;
-	pointer-events: none;
+    pointer-events: none;
+
 }
 
 .top-nav ul {
@@ -92,7 +130,7 @@ body, html {
     flex-wrap: wrap;
     justify-content: center;
     gap: 40px;
-	pointer-events: auto;
+    pointer-events: auto;
 }
 
 .top-nav a {
@@ -112,7 +150,6 @@ body, html {
     color: var(--text-color);
 }
 
-/* Εφέ γραμμής κάτω από τα links */
 .top-nav a::after {
     content: '';
     position: absolute;
@@ -130,7 +167,15 @@ body, html {
     width: 100%;
 }
 
-/* 5. ΔΟΜΗ ΣΕΛΙΔΩΝ (Hero & Layouts) */
+
+
+
+
+
+
+/* --------------------------------------------------------------------------
+   5. LAYOUTS & TYPOGRAPHY
+   -------------------------------------------------------------------------- */
 .hero {
     position: relative;
     width: 100%;
@@ -153,12 +198,8 @@ body, html {
     height: 100vh;
     z-index: 2;
     overflow-y: auto;
-    padding-top: var(--nav-height);
-    padding-bottom: 80px;
-    
+    padding: var(--nav-height) 0 80px 0; /* Shorthand padding */
 }
-
-
 
 .content-container {
     max-width: 750px;
@@ -167,56 +208,16 @@ body, html {
     text-align: left;
 }
 
-/* 6. ΤΥΠΟΓΡΑΦΙΑ & ΣΤΟΙΧΕΙΑ ΣΕΛΙΔΩΝ */
-.name {
-    font-size: 3.5rem;
-    font-weight: 700;
-    letter-spacing: -1px;
-    margin-bottom: 10px;
-}
+/* Typography */
+.name { font-size: 3.5rem; font-weight: 700; letter-spacing: -1px; margin-bottom: 10px; }
+.title { font-size: 1.2rem; font-weight: 500; color: var(--text-grey); margin-bottom: 20px; text-transform: uppercase; letter-spacing: 2px; }
+.description { font-size: 1rem; font-weight: 300; line-height: 1.6; color: #cccccc; transition: color 0.3s ease; }
+body[data-theme="light"] .description { color: #444444; }
+.page-title { font-size: 2.5rem; margin-bottom: 30px; text-align: center; letter-spacing: -1px; font-weight: 700; }
+.placeholder-text { text-align: center; color: var(--text-muted); font-weight: 300; margin-top: 50px; font-size: 1.1rem; }
 
-.title {
-    font-size: 1.2rem;
-    font-weight: 500;
-    color: var(--text-grey);
-    margin-bottom: 20px;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-}
-
-.description {
-    font-size: 1rem;
-    font-weight: 300;
-    line-height: 1.6;
-    color: #cccccc;
-    transition: color 0.3s ease;
-}
-
-body[data-theme="light"] .description {
-    color: #444444;
-}
-
-.page-title {
-    font-size: 2.5rem;
-    margin-bottom: 30px;
-    text-align: center;
-    letter-spacing: -1px;
-    font-weight: 700;
-}
-
-.placeholder-text {
-    text-align: center;
-    color: var(--text-muted);
-    font-weight: 300;
-    margin-top: 50px;
-    font-size: 1.1rem;
-}
-
-/* Εικόνα Προφίλ */
-.image-container {
-    margin-bottom: 25px;
-}
-
+/* Profile Image */
+.image-container { margin-bottom: 25px; }
 .profile-img {
     width: 180px;
     height: 180px;
@@ -226,7 +227,6 @@ body[data-theme="light"] .description {
     border: 2px solid rgba(255, 255, 255, 0.1);
     transition: all 0.5s ease;
 }
-
 .profile-img:hover {
     filter: grayscale(0%);
     transform: scale(1.05);
@@ -240,76 +240,72 @@ body[data-theme="light"] .description {
 
 
 
-/* ==========================================================================
-   Publications (Δημοσιεύσεις) - Ειδικά Στυλ Τυπογραφίας (Style: geometric sans-serif)
-   ========================================================================== */
-
-/* Γενικός επιλογέας για να εφαρμόσουμε τη γραμματοσειρά 'Space Grotesk' */
-.pub-category,
-.pub-list {
-    font-family: 'Space Grotesk', sans-serif;
-}
-
-.pub-category { 
-    margin-bottom: 50px; 
-}
-
-/* 1. "JOURNALS" (Τίτλος Κατηγορίας) */
+/* --------------------------------------------------------------------------
+   6. PUBLICATIONS & BOOKS
+   -------------------------------------------------------------------------- */
+.pub-category, .pub-list { font-family: 'Space Grotesk', sans-serif; }
+.pub-category { margin-bottom: 50px; }
 .pub-category h2 {
     font-size: 1.4rem;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.15); /* Αχνή γραμμή */
+    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
     padding-bottom: 5px;
     margin-bottom: 30px;
-    
-    color: var(--text-color); /* Λευκό */
-    font-weight: 500; /* Μέτριο βάρος */
-    text-transform: uppercase; /* Κεφαλαία */
-    letter-spacing: 0.25em; /* Σημαντική απόσταση γραμμάτων (π.χ. 4px) */
+    color: var(--text-color);
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.25em;
 }
+.pub-list { list-style: none; padding: 0; }
+.pub-list li { margin-bottom: 15px; color: var(--text-grey); font-size: 0.95rem; line-height: 1.1; font-weight: 300; }
+.pub-list strong { color: var(--text-color); font-size: 1.1rem; font-weight: 700; display: block; margin-bottom: -15px; }
 
-.pub-list { 
-    list-style: none; 
-    padding: 0; 
-}
-
-/* 2. Στοιχεία Λίστας (Περιοδικό, Έτος) */
-.pub-list li {
-    margin-bottom: 15px;
-    color: var(--text-grey); /* Γκρι (π.χ. #888888) */
-    font-size: 0.95rem;
-    line-height: 1.1;
-    font-weight: 300; /* Ελαφρύ βάρος */
-}
-
-/* 3. "Parametric Design..." (Τίτλος Άρθρου) */
-.pub-list strong {
-    color: var(--text-color); /* Λευκό */
-    font-size: 1.1rem;
-    font-weight: 700; /* Έντονο βάρος (Bold) */
-    display: block; /* Για να μπαίνει ο τίτλος σε νέα γραμμή */
-    margin-bottom: -15px; /* Λίγος χώρος κάτω από τον τίτλο */
-	
-}
-
-/* 4. "Read Article ->" (Σύνδεσμος) */
 .pub-link {
-    color: var(--text-grey); /* Γκρι */
+    color: var(--text-grey);
     text-decoration: none;
     font-size: 0.85rem;
-    font-weight: 300; /* Ελαφρύ βάρος */
+    font-weight: 300;
     transition: color 0.3s ease;
     display: inline-block;
     margin-top: 5px;
 }
+.pub-link:hover { color: var(--text-color); }
 
-.pub-link:hover { 
-    color: var(--text-color); /* Λευκό στο hover */ 
+/* Books Page Styles */
+.books-container { max-width: 950px; }
+.book-divider { border: 0; height: 1px; background-color: #353535; margin: 20px 0; }
+.book-row { display: flex; align-items: center; justify-content: space-between; gap: 30px; margin: 20px 0; }
+.book-info { flex: 1.2; text-align: center; display: flex; flex-direction: column; align-items: center; }
+.book-title { font-size: 1.1rem; font-weight: 700; color: #000000; margin-bottom: 25px; letter-spacing: 0.5px; }
+.book-authors { font-size: 0.8rem; font-weight: 700; color: #000000; line-height: 1.8; margin-bottom: 35px; }
+.author-name { text-decoration: none; transition: opacity 0.3s ease; color: #aa0505; margin: 0 4px; }
+
+.book-btn {
+    background-color: #3a3b3c;
+    color: #ffffff;
+    text-decoration: none;
+    padding: 10px 14px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    font-size: 0.95rem;
+    border-radius: 2px;
+    transition: background-color 0.3s ease;
 }
+.book-btn:hover { background-color: #1a1a1a; color: #ffffff; }
+
+.book-image { flex: 0.8; display: flex; justify-content: center; }
+.book-image img { max-width: 150px; height: auto; box-shadow: -5px 10px 25px rgba(0, 0, 0, 0.15); cursor: pointer; transition: transform 0.3s ease, box-shadow 0.3s ease; }
+.book-image img:hover { transform: scale(1.05); }
 
 
 
 
-/* 8. ΨΗΦΙΑΚΟ ΒΙΟΓΡΑΦΙΚΟ (CV Components) */
+
+
+
+
+/* --------------------------------------------------------------------------
+   7. CV & PORTFOLIO COMPONENTS
+   -------------------------------------------------------------------------- */
 .cv-digital-container {
     background: var(--cv-container-bg);
     padding: 10px;
@@ -327,44 +323,13 @@ body[data-theme="light"] .description {
     padding: 30px;
     margin-bottom: 30px;
 }
-
-.cv-section h3 {
-    font-size: 1.3rem;
-    margin-bottom: 25px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    color: var(--cv-text-color);
-    display: inline-block;
-    border-bottom: 2px solid var(--cv-text-color);
-    padding-bottom: 3px;
-}
-
-.cv-section ul {
-    padding-left: 20px;
-}
-
-.cv-section li {
-    margin-bottom: 12px;
-    color: #333333;
-    font-weight: 300;
-    font-size: 0.95rem;
-    line-height: 1.0;
-    text-align: justify;
-}
-
-.cv-section li strong {
-    font-weight: 700;
-    color: var(--cv-text-color);
-}
+.cv-section h3 { font-size: 1.3rem; margin-bottom: 25px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--cv-text-color); display: inline-block; border-bottom: 2px solid var(--cv-text-color); padding-bottom: 3px; }
+.cv-section ul { padding-left: 20px; }
+.cv-section li { margin-bottom: 12px; color: #333333; font-weight: 300; font-size: 0.95rem; line-height: 1.0; text-align: justify; }
+.cv-section li strong { font-weight: 700; color: var(--cv-text-color); }
 
 /* Skills Badges */
-.skills-grid {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-}
-
+.skills-grid { display: flex; flex-wrap: wrap; gap: 10px; }
 .cv-pill.skill {
     background: #ffffff;
     color: #050505;
@@ -374,303 +339,66 @@ body[data-theme="light"] .description {
     font-size: 0.9rem;
     transition: all 0.3s ease;
 }
+.cv-pill.skill:hover { background: #050505; color: #ffffff; border-color: #050505; }
 
-.cv-pill.skill:hover {
-    background: #050505;
-    color: #ffffff;
-    border-color: #050505;
-}
-
-/* Download PDF Button */
-.download-btn {
-    display: inline-block;
-    background: var(--cv-text-color);
-    color: #ffffff;
-    padding: 12px 25px;
-    text-decoration: none;
-    font-size: 0.9rem;
-    font-weight: 500;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    border-radius: 4px;
-    transition: all 0.3s ease;
-    position: relative;
-    z-index: 4;
-}
-
-.download-btn:hover {
-    background: #444444;
-    transform: translateY(-2px);
-}
-
-/* ==========================================================================
-   9. MEDIA QUERIES (Προσαρμογή για Κινητά & Tablets)
-   ========================================================================== */
-@media (max-width: 768px) {
-    .name { font-size: 2.2rem; }
-    .title { font-size: 0.95rem; letter-spacing: 1.5px; }
-    .description { font-size: 0.9rem; }
-    .profile-img { width: 140px; height: 140px; }
-
-    .top-nav { padding: 20px 0; }
-    .top-nav ul { gap: 25px; }
-    .top-nav a { font-size: 0.8rem; letter-spacing: 1px; }
-
-    .page-title { font-size: 2rem; margin-bottom: 20px; }
-    .content-page { padding-top: 110px; }
-
-    .cv-digital-container { padding: 10px; }
-    .cv-section { padding: 10px; margin-bottom: 20px; }
-    .cv-section h3 { font-size: 1.0rem; margin-bottom: 15px; }
-    .cv-section li { font-size: 0.75rem; margin-bottom: 10px; }
-    .content-container { padding: 0 0px;}
-
-    .pub-category h2 { font-size: 1.2rem; padding: 0 20px; }
-    .pub-list li { font-size: 0.75rem; padding: 0 20px;}
-	.pub-list strong {font-size: 0.9rem;}
-	
-	.pub-list strong {margin-bottom: -10px;}
-	
-	
-	
-    
-	
-}
-	
-	
-	
-	
-}
-
-/* Native View Transitions (Chrome / Safari Edge Support) */
-@view-transition {
-    navigation: auto;
-}
-
-/* Κουμπί Δημοσιεύσεων (Publications Link) - Τελική Μορφή */
+/* Buttons */
 .cv-link-btn {
-     
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    
     background-color: #ffffff;
     color: #050505 !important;
-    
     width: 25px;        
     height: 25px;        
     border-radius: 10px;
-    
-    
     font-size: 1.5rem;  
     text-decoration: none;
-      
     vertical-align: middle; 
     transition: all 0.2s ease;
-    line-height: 0;      /* 4. Το μηδενίζουμε για να μην μπερδεύει την κατακόρυφη στοίχιση */
-	-webkit-text-stroke: 0.2px #aa0505; 
-	position: relative;
+    line-height: 0; 
+    -webkit-text-stroke: 0.2px #aa0505; 
+    position: relative;
     top: -1.5px; 
-	
 }
+.cv-link-btn:hover { background-color: #050505; color: #ffffff !important; -webkit-text-stroke: 0.4px #202020; }
 
-.cv-link-btn:hover {
-    background-color: #050505;
-    color: #ffffff !important;
-    -webkit-text-stroke: 0.4px #202020; 
-    
+body[data-theme="light"] .cv-link-btn { background-color: #ffffff; color: #aa0505 !important; border: 1px solid #ffffff; }
+body[data-theme="light"] .cv-link-btn:hover { background-color: #202020; color: #ffffff !important; }
 
-}
-
-body[data-theme="light"] .cv-link-btn {
-    background-color: #ffffff;
-    color: #aa0505 !important;
-    border: 1px solid #ffffff;
-}
-
-body[data-theme="light"] .cv-link-btn:hover {
-    background-color: #202020;
-    color: #ffffff !important;
-}
-
-
-/* ==========================================================================
-   10. BOOKS PAGE STYLES (Tziola Publications)
-   ========================================================================== */
-
-/* Ανοίγουμε λίγο το πλάτος για να χωρέσουν άνετα δίπλα-δίπλα */
-.books-container {
-    max-width: 950px;
-}
+/* Portfolio */
+.portfolio-container { max-width: 1100px; }
+.portfolio-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 25px; margin: 30px 0 50px 0; }
+.portfolio-item { width: 100%; overflow: hidden; border-radius: 6px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08); transition: transform 0.3s ease, box-shadow 0.3s ease; }
+.portfolio-item img { width: 100%; height: auto; display: block; object-fit: cover; }
+.portfolio-item:hover { transform: translateY(-4px); box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15); }
 
 
 
-/* Οριζόντια Διαχωριστική Γραμμή (Απαλό βεραμάν/γαλάζιο) */
-.book-divider {
-    border: 0;
-    height: 1px;
-    background-color: #353535; 
-    margin: 20px 0;
-}
-
-/* Δομή Γραμμής Βιβλίου (Κείμενο Αριστερά - Εικόνα Δεξιά) */
-.book-row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 30px;
-    margin: 20px 0;
-}
-
-/* Κεντράρισμα του κειμένου μέσα στον δικό του χώρο */
-.book-info {
-    flex: 1.2;
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.book-title {
-    font-size: 1.1rem;
-    font-weight: 700;
-    color: #000000;
-    margin-bottom: 25px;
-    letter-spacing: 0.5px;
-}
-
-/* Στυλ συγγραφέων */
-.book-authors {
-    font-size: 0.8rem;
-    font-weight: 700;
-    color: #000000;
-    line-height: 1.8;
-    margin-bottom: 35px;
-}
-
-/* Κεραμιδί/Κόκκινο χρώμα για τα ονόματα */
-.author-name {
-    text-decoration: none;
-    transition: opacity 0.3s ease;
-    color: #aa0505; 
-    margin: 0 4px;
-}
-
-/* Κουμπί BOOK */
-.book-btn {
-    background-color: #3a3b3c;
-    color: #ffffff;
-    text-decoration: none;
-    padding: 10px 14px;
-    font-weight: 700;
-    letter-spacing: 2px;
-    font-size: 0.95rem;
-    border-radius: 2px;
-    transition: background-color 0.3s ease;
-}
-
-.book-btn:hover {
-    background-color: #1a1a1a;
-    color: #ffffff;
-}
-
-/* Εικόνα Βιβλίου */
-.book-image {
-    flex: 0.8;
-    display: flex;
-    justify-content: center;
-}
-
-.book-image img {
-    max-width: 150px;
-    height: auto;
-    box-shadow: -5px 10px 25px rgba(0, 0, 0, 0.15); 
-}
 
 
 
-/* ==========================================================================
-   RESPONSIVE: Προσαρμογή για Κινητά
-   ========================================================================== */
-@media (max-width: 768px) {
-    .book-row {
-        flex-direction: column; /* Στα κινητά μπαίνουν το ένα κάτω από το άλλο */
-    }
-    
-    .book-image {
-        order: -1; /* Φέρνει την εικόνα του βιβλίου πάνω από το κείμενο στις μικρές οθόνες */
-        margin-bottom: 10px;
-    }
 
-    .tziola-title {
-        font-size: 1.5rem;
-    }
-	
-	.book-authors {
-		font-size: 0.7rem;
-		margin-bottom: 10px;
-		padding: 0 20px;
-		
-		
-		
-	}
-	
-	.book-title {
-		font-size: 0.7rem;
-	}
-
-    .cv-link-btn { width: 15px; height: 15px; border-radius: 5px; font-size: 1.1rem; top: -1px; }
-}
-	
-}
-
-
-/* ==========================================================================
-   11. IMAGE MODAL / LIGHTBOX (Εφέ Μεγέθυνσης Εικόνων)
-   ========================================================================== */
-
-/* Ο κέρσορας γίνεται 'χεράκι' και η εικόνα μεγαλώνει ελαφρώς στο hover για να δείξει ότι είναι κλικαρίσιμη */
-.book-image img {
-    cursor: pointer;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.book-image img:hover {
-    transform: scale(1.05);
-}
-
-/* Το μαύρο φόντο που καλύπτει όλη την οθόνη */
+/* --------------------------------------------------------------------------
+   8. MODALS / LIGHTBOX
+   -------------------------------------------------------------------------- */
 .modal {
-    display: none; /* Κρυφό από προεπιλογή */
+    display: none; 
     position: fixed;
-    z-index: 9999; /* Πολύ υψηλό z-index για να είναι πάνω από όλα (nav, canvas κλπ) */
+    z-index: 9999;
+    inset: 0; /* Αντικαθιστά top, left, width, height */
     padding-top: 60px;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.85); /* Μαύρο με διαφάνεια */
-    backdrop-filter: blur(5px); /* Θόλωμα του φόντου από πίσω */
+    background-color: rgba(0, 0, 0, 0.85); 
+    backdrop-filter: blur(5px); 
 }
-
-/* Η μεγάλη εικόνα στο κέντρο */
 .modal-content {
     margin: auto;
     display: block;
     max-width: 90%;
-    max-height: 80vh; /* Δεν θα ξεπερνάει το 80% του ύψους της οθόνης */
+    max-height: 80vh; 
     object-fit: contain;
     box-shadow: 0 5px 25px rgba(0,0,0,0.5);
-    animation: zoomIn 0.3s ease; /* Εφέ εμφάνισης */
+    animation: zoomIn 0.3s ease; 
 }
-
-/* Εφέ Zoom-in όταν ανοίγει */
-@keyframes zoomIn {
-    from { transform: scale(0.8); opacity: 0; }
-    to { transform: scale(1); opacity: 1; }
-}
-
-/* Το κουμπί κλεισίματος (X) πάνω δεξιά */
 .close-modal {
     position: absolute;
     top: 30px;
@@ -681,74 +409,53 @@ body[data-theme="light"] .cv-link-btn:hover {
     transition: 0.3s;
     cursor: pointer;
 }
-
 .close-modal:hover,
-.close-modal:focus {
-    color: #a13d33;
-    text-decoration: none;
-    cursor: pointer;
-}
+.close-modal:focus { color: #a13d33; text-decoration: none; }
 
 
 
 
-/* ==========================================================================
-   12. PORTFOLIO PAGE STYLES (Ζευγαρωτές Εικόνες)
-   ========================================================================== */
 
-/* Δίνουμε μεγαλύτερο πλάτος στη σελίδα για να χωράνε άνετα οι δύο στήλες */
-.portfolio-container {
-    max-width: 1100px;
-}
 
-/* Δημιουργία πλέγματος 2 στηλών για υπολογιστές */
-.portfolio-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr); /* 1 στήλη αριστερά, 1 δεξιά */
-    gap: 25px; /* Απόσταση μεταξύ των εικόνων */
-    margin-top: 30px;
-    margin-bottom: 50px;
-}
 
-/* Στυλ για το πλαίσιο της κάθε εικόνας */
-.portfolio-item {
-    width: 100%;
-    overflow: hidden;
-    border-radius: 6px; /* Ελαφρώς στρογγυλεμένες γωνίες */
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08); /* Διακριτική σκιά */
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.portfolio-item img {
-    width: 100%;
-    height: auto;
-    display: block;
-    object-fit: cover;
-}
-
-/* Εφέ hover: Η εικόνα ανασηκώνεται ελαφρώς όταν περνάει το ποντίκι */
-.portfolio-item:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-}
-
-/* RESPONSIVE: Μετατροπή σε 1 στήλη για κινητά */
+/* --------------------------------------------------------------------------
+   9. MEDIA QUERIES (Συγκεντρωμένα για όλες τις οθόνες < 768px)
+   -------------------------------------------------------------------------- */
 @media (max-width: 768px) {
-    .portfolio-grid {
-        grid-template-columns: 1fr; /* Μία εικόνα ανά σειρά */
-        gap: 15px; /* Μικρότερο κενό στα κινητά */
-    }
-    
-    .portfolio-container {
-        padding: 0 20px; /* Απόσταση από τις άκρες της οθόνης */
-    }
-}
+    /* Base & Layout */
+    .name { font-size: 2.2rem; }
+    .title { font-size: 0.95rem; letter-spacing: 1.5px; }
+    .description { font-size: 0.9rem; }
+    .profile-img { width: 140px; height: 140px; }
+    .page-title { font-size: 2rem; margin-bottom: 20px; }
+    .content-page { padding-top: 110px; }
+    .content-container { padding: 0; }
 
+    /* Navigation */
+    .top-nav { padding: 20px 20px 20px 20px; }
+    .top-nav ul { gap: 25px; }
+    .top-nav a { font-size: 0.8rem; letter-spacing: 1px; }
 
-/* ==========================================================================
-   CUSTOM SCROLLBAR (Οπτικό εφέ κύκλου σε λεπτή γραμμή)
-   ========================================================================== */
+    /* CV Section */
+    .cv-digital-container { padding: 10px; }
+    .cv-section { padding: 10px; margin-bottom: 20px; }
+    .cv-section h3 { font-size: 1.0rem; margin-bottom: 15px; }
+    .cv-section li { font-size: 0.75rem; margin-bottom: 10px; }
+    .cv-link-btn { width: 15px; height: 15px; border-radius: 5px; font-size: 1.1rem; top: -1px; }
 
-* {
-    scrollbar-color: var(--text-color) transparent;
+    /* Publications */
+    .pub-category h2 { font-size: 1.2rem; padding: 0 20px; }
+    .pub-list li { font-size: 0.75rem; padding: 0 20px; }
+    .pub-list strong { font-size: 0.9rem; margin-bottom: -10px; }
+
+    /* Books */
+    .book-row { flex-direction: column; }
+    .book-image { order: -1; margin-bottom: 10px; }
+    .tziola-title { font-size: 1.5rem; }
+    .book-authors { font-size: 0.7rem; margin-bottom: 10px; padding: 0 20px; }
+    .book-title { font-size: 0.7rem; }
+
+    /* Portfolio */
+    .portfolio-grid { grid-template-columns: 1fr; gap: 15px; }
+    .portfolio-container { padding: 0 20px; }
 }

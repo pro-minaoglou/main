@@ -104,17 +104,18 @@ function initScrollNavbar() {
     if (!isHomePage) {
         const topNav = document.querySelector('.top-nav');
         const pageScroller = document.querySelector('.content-page'); 
-        let lastScrollY = 0;
 
         if (pageScroller && topNav) {
             pageScroller.addEventListener('scroll', () => {
                 let currentScrollY = pageScroller.scrollTop;
-                if (currentScrollY > lastScrollY && currentScrollY > 50) {
-                    topNav.style.transform = "translateY(-100%)";
-                } else {
+                
+                // Αν είμαστε σχεδόν στην κορυφή της σελίδας (κάτω από 50px scroll), εμφάνισε το navbar
+                if (currentScrollY < 50) {
                     topNav.style.transform = "translateY(0)";
+                } else {
+                    // Σε οποιοδήποτε άλλο σημείο της σελίδας, κράτα το κρυμμένο
+                    topNav.style.transform = "translateY(-100%)";
                 }
-                lastScrollY = Math.max(0, currentScrollY); 
             });
         }
     }
