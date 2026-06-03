@@ -1,5 +1,9 @@
 Δημοσιεύσεις σε Διεθνή Περιοδικά
 
+&#x09;**Minaoglou P.**, Stavridou A.D., Dudek M., Kyratsis P., (2026), "Modular small/medium scale architectural shading structures based on computational design", International Journal of Innovative Technology and Interdisciplinary Sciences, 9(2), pp. 1049-1068.
+
+&#x09;  https://journals.tultech.eu/index.php/ijitis/article/view/546
+
 &#x09;**Minaoglou P.**, Tzotzis A., Dhoska K., Kyratsis P. (2026), "Automated custom sunglasses frame design using Artificial Intelligence and Computational Design", Machines, 14(1), 109.
 
 &#x09;	https://scholar.google.com/scholar?q=Automated+custom+sunglasses+frame+design+using+Artificial+Intelligence+and+Computational+Design
