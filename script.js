@@ -335,8 +335,9 @@ function initLightbox() {
     });
 }
 
-
-// Συνάρτηση για την αυτόματη φόρτωση των δημοσιεύσεων (Βελτιωμένη Έκδοση)
+// ==========================================================================
+// 7. ΑΥΤΟΜΑΤΗ ΦΟΡΤΩΣΗ ΔΗΜΟΣΙΕΥΣΕΩΝ (MARKDOWN TO HTML)
+// ==========================================================================
 async function loadPublications() {
     try {
         const response = await fetch('data.md');
@@ -344,7 +345,7 @@ async function loadPublications() {
         
         let text = await response.text();
         
-        // 1. Καθαρισμός από κρυφούς χαρακτήρες (BOM) που μπαίνουν αυτόματα στα αρχεία
+        // 1. Καθαρισμός από κρυφούς χαρακτήρες (BOM)
         text = text.replace(/^\uFEFF/, ''); 
         
         const sectionMap = {
@@ -359,12 +360,12 @@ async function loadPublications() {
         const lines = text.split('\n');
         
         for (let i = 0; i < lines.length; i++) {
-            // Καθαρίζουμε κενά, tabs και το σύμβολο &#x09; (αν έχει αποθηκευτεί ως κείμενο)
+            // Καθαρίζουμε τα &#x09; (tabs) και τα κενά
             let line = lines[i].replace(/&#x09;/g, '').trim(); 
             
             if (!line) continue; 
             
-            // 2. Εύρεση κατηγορίας με .includes() για απόλυτη ασφάλεια έναντι κρυφών κενών
+            // 2. Εύρεση κατηγορίας
             let matchedSection = Object.keys(sectionMap).find(key => line.includes(key));
             if (matchedSection) {
                 currentSectionId = sectionMap[matchedSection];
@@ -372,12 +373,11 @@ async function loadPublications() {
             }
             
             if (currentSectionId) {
-                // 3. Βρίσκουμε το Link ελέγχοντας απλά αν ΥΠΑΡΧΕΙ το 'http' στη γραμμή
+                // 3. Εύρεση link
                 if (line.includes('http')) {
                     const ul = document.getElementById(currentSectionId);
                     if (ul && currentPubText) {
                         
-                        // Απομονώνουμε το καθαρό URL αγνοώντας τυχόν άλλα σύμβολα γύρω του
                         const urlMatch = line.match(/(https?:\/\/[^\s]+)/);
                         const finalUrl = urlMatch ? urlMatch[1] : line;
 
@@ -401,3 +401,6 @@ async function loadPublications() {
         console.error("Σφάλμα κατά τη φόρτωση του data.md:", error);
     }
 }
+
+// Εκτέλεση της συνάρτησης όταν φορτώσει η σελίδα
+document.addEventListener('DOMContentLoaded', loadPublications);
