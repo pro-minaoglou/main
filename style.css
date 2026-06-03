@@ -430,6 +430,16 @@ body[data-theme="light"] .description {
 	.pub-list strong {font-size: 0.9rem;}
 	
 	.pub-list strong {margin-bottom: -10px;}
+	
+	
+	
+    
+	
+}
+	
+	
+	
+	
 }
 
 /* Native View Transitions (Chrome / Safari Edge Support) */
@@ -447,8 +457,8 @@ body[data-theme="light"] .description {
     background-color: #ffffff;
     color: #050505 !important;
     
-    width: 35px;        
-    height: 20px;        
+    width: 25px;        
+    height: 25px;        
     border-radius: 10px;
     
     
@@ -458,7 +468,7 @@ body[data-theme="light"] .description {
     vertical-align: middle; 
     transition: all 0.2s ease;
     line-height: 0;      /* 4. Το μηδενίζουμε για να μην μπερδεύει την κατακόρυφη στοίχιση */
-	-webkit-text-stroke: 0.4px #ffffff; 
+	-webkit-text-stroke: 0.5px #aa0505; 
 	position: relative;
     top: -1.5px; 
 	
@@ -474,7 +484,7 @@ body[data-theme="light"] .description {
 
 body[data-theme="light"] .cv-link-btn {
     background-color: #ffffff;
-    color: #050505 !important;
+    color: #aa0505 !important;
     border: 1px solid #ffffff;
 }
 
@@ -609,7 +619,7 @@ body[data-theme="light"] .cv-link-btn:hover {
 		font-size: 0.7rem;
 	}
 
-    
+    .cv-link-btn { width: 15px; height: 15px; border-radius: 5px; font-size: 1.1rem; top: -1px; }
 }
 	
 }
