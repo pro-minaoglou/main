@@ -36,13 +36,22 @@ function initThemeTransition() {
 function initAnimations() {
     const contentPage = document.querySelector('.content-page');
     
-    // Ομαλή εμφάνιση περιεχομένου
+	// Ομαλή εμφάνιση περιεχομένου
     if (contentPage) {
         contentPage.style.opacity = "0";
-        setTimeout(() => {
+        // Το 'load' περιμένει να φορτώσουν τα γραφικά πριν τρέξει το animation
+        window.addEventListener('load', () => {
             contentPage.style.transition = "opacity 0.5s ease-in-out";
             contentPage.style.opacity = "1";
-        }, 100);
+        });
+        
+        // Fallback: Αν για κάποιο λόγο το load αργήσει υπερβολικά, εμφανίζουμε τη σελίδα στα 1.5 δευτερόλεπτα
+        setTimeout(() => {
+            if (contentPage.style.opacity === "0") {
+                contentPage.style.transition = "opacity 0.5s ease-in-out";
+                contentPage.style.opacity = "1";
+            }
+        }, 1500);
     }
 
     // GSAP Εφέ
