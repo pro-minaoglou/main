@@ -334,3 +334,72 @@ function initLightbox() {
         }
     });
 }
+
+
+
+// Συνάρτηση για την αυτόματη φόρτωση των δημοσιεύσεων
+async function loadPublications() {
+    try {
+        // 1. Ζητάμε το αρχείο data.md
+        const response = await fetch('data.md');
+        if (!response.ok) throw new Error("Δεν βρέθηκε το data.md");
+        
+        const text = await response.text();
+        
+        // Αντιστοιχία των τίτλων του MD με τα IDs των <ul> στο HTML
+        const sectionMap = {
+            'Δημοσιεύσεις σε Διεθνή Περιοδικά': 'journals-list',
+            'Βιβλία και κεφάλαια σε βιβλία': 'books-list',
+            'Δημοσιεύσεις σε Διεθνή Συνέδρια': 'conferences-list'
+        };
+
+        let currentSectionId = null;
+        let currentPubText = '';
+        
+        // 2. Χωρίζουμε το αρχείο ανά γραμμή
+        const lines = text.split('\n');
+        
+        for (let i = 0; i < lines.length; i++) {
+            let line = lines[i].trim(); // Καθαρίζουμε κενά και tabs (&#x09;)
+            
+            if (!line) continue; // Αγνοούμε τις κενές γραμμές
+            
+            // Ελέγχουμε αν η γραμμή είναι τίτλος κατηγορίας
+            if (sectionMap[line]) {
+                currentSectionId = sectionMap[line];
+                continue;
+            }
+            
+            if (currentSectionId) {
+                // Ελέγχουμε αν η γραμμή είναι το Link (ξεκινάει με http)
+                if (line.startsWith('http')) {
+                    const ul = document.getElementById(currentSectionId);
+                    if (ul && currentPubText) {
+                        const li = document.createElement('li');
+                        
+                        // Μετατρέπουμε το markdown **bold** σε HTML <strong>bold</strong>
+                        // και διορθώνουμε τυχόν escaped χαρακτήρες όπως το \&
+                        let formattedText = currentPubText
+                            .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                            .replace(/\\&/g, '&'); 
+                            
+                        // Φτιάχνουμε τη δομή του <li>
+                        li.innerHTML = `${formattedText} <a href="${line}" target="_blank" class="cv-link-btn">☍</a>`;
+                        ul.appendChild(li);
+                        
+                        // Καθαρίζουμε το κείμενο για την επόμενη εγγραφή
+                        currentPubText = ''; 
+                    }
+                } else {
+                    // Αν δεν είναι link, είναι η περιγραφή της δημοσίευσης
+                    currentPubText = line;
+                }
+            }
+        }
+    } catch (error) {
+        console.error("Σφάλμα κατά τη φόρτωση του data.md:", error);
+    }
+}
+
+// Εκτέλεση της συνάρτησης όταν φορτώσει η σελίδα
+document.addEventListener('DOMContentLoaded', loadPublications);
