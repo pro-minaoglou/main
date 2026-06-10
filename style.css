@@ -16,9 +16,9 @@
     --text-grey: #888888;
     --text-muted: #666666;
     --accent-line: rgba(255, 255, 255, 0.15);
-    --cv-container-bg: #ffffff;
+    --cv-container-bg: #ffffff00;
     --cv-text-color: #050505;
-    --cv-card-bg: rgba(255, 255, 255, 0.8);
+    --cv-card-bg: rgba(255, 255, 255, 50%);
     --cv-card-border: rgba(0, 0, 0, 0.08);
     --nav-height: 140px;
 }
