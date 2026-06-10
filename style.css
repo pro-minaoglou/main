@@ -323,9 +323,9 @@ body[data-theme="light"] .description { color: #444444; }
     padding: 30px;
     margin-bottom: 30px;
 }
-.cv-section h3 { font-size: 1.3rem; margin-bottom: 25px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--cv-text-color); display: inline-block; border-bottom: 2px solid var(--cv-text-color); padding-bottom: 3px; }
+.cv-section h3 { font-size: 1.1rem; margin-bottom: 25px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--cv-text-color); display: inline-block; border-bottom: 2px solid var(--cv-text-color); padding-bottom: 3px; }
 .cv-section ul { padding-left: 20px; }
-.cv-section li { margin-bottom: 12px; color: #333333; font-weight: 300; font-size: 0.95rem; line-height: 1.0; text-align: justify; }
+.cv-section li { margin-bottom: 12px; color: #333333; font-weight: 300; font-size: 0.85rem; line-height: 1.0; text-align: justify; }
 .cv-section li strong { font-weight: 700; color: var(--cv-text-color); }
 
 /* Skills Badges */
